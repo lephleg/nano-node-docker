@@ -27,5 +27,3 @@ services:
 
 networks:
   default:
-    external:
-      name: nano_node_internal
