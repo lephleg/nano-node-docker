@@ -27,13 +27,14 @@ This will build and deploy the following containers on your Docker host:
 
 * Depending on your OS, the appropriate version of Docker Community Edition has to be installed on your machine.  ([Download Docker Community Edition](https://www.docker.com/community-edition#/download))
 * Latest version of Docker-compose should be installed as well. ([Install Docker Compose](https://docs.docker.com/compose/install/))
+* Of course [Git](https://git-scm.com/) and a text editor.
 
 **Installation steps:** 
 
 1. Clone this repository inside an empty directory in which your OS user has full write access:
 
 ```
-$ git clone https://github.com/lephleg/nano-node-monitor-docker.git .
+$ git clone https://github.com/lephleg/nano-node-monitor-docker-stack.git .
 ```
 
 2. Clone the original NANO Node Monitor source code repository in a new `monitor` folder with the command:
