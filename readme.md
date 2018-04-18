@@ -5,7 +5,7 @@
 This will build and deploy the following containers on your Docker host:
 
 * **nano-node** -- This is the official NANO node created from the official Docker Image (RPC is enabled but not publicly accessible)
-* **nano-monitor** -- This is the popular NANO Node Monitor PHP application built with a custom image containing: PHP7.2, Nginx, Composer & Supervisor.
+* **nano-node-monitor** -- This is the popular NANO Node Monitor PHP application built with a custom image containing: PHP7.2, Nginx, Composer & Supervisor.
 
 #### **Directory Structure**
 ```
@@ -18,7 +18,7 @@ This will build and deploy the following containers on your Docker host:
 +-- Dockerfile
 +-- docker-compose.yml
 +-- readme.md <this file>
-+-- monitor <NANO node monitor repository root and mounted inside nano-monitor container>
++-- monitor <NANO node monitor repository root mounted inside nano-monitor container>
 ```
 
 ### **Setup instructions using Docker natively (Windows 10/Linux/Mac)**
@@ -36,32 +36,26 @@ This will build and deploy the following containers on your Docker host:
 $ git clone https://github.com/lephleg/nano-node-monitor-docker.git .
 ```
 
-2. Clone the original NANO Node Monitor source code repository in a new **monitor** folder with the command:
+2. Clone the original NANO Node Monitor source code repository in a new `monitor` folder with the command:
 
 ```
-$ git clone https://github.com/NanoTools/nanoNodeMonitor.git src
+$ git clone https://github.com/NanoTools/nanoNodeMonitor.git monitor
 ```
 
-3. You should now have the directory structure described above. Copy and edit the monitor config file:
+3. You should now have the directory structure described above. Copy and edit the monitor config file (use `nano-node` as your `nanoNodeRPCIP` setting):
 
 ```
-$ cp src/modules/config.sample.php src/modules/config.php 
-$ nano src/modules/config.php
+$ cp monitor/modules/config.sample.php src/modules/config.php 
+$ nano monitor/modules/config.php
 ```
 
-4. Create an external docker network to for your node to communicate with your monitor:
-
-```
-$ docker network create nano_node_network
-```
-
-5. Build and run your containers:
+4. Build and run your containers:
 
 ```
 $ docker-compose up -d
 ```
 
-7. That's it! Navigate to port 80 on your host to access the NANO Node Monitor dashboard.
+5. That's it! Navigate to port 80 on your host to access the NANO Node Monitor dashboard.
 
 ### **Credits**
 
