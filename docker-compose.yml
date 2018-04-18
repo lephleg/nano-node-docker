@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  nano-node:
+    image: nanocurrency/nano:latest
+    container_name: nano-node
+    hostname: nano-node
+    environment:
+      - TERM=xterm
+    restart: unless-stopped
+    ports:
+      - "7075:7075/udp"
+      - "7075:7075"
+      - "127.0.0.1:7076:7076"
+    volumes:
+      - ./RaiBlocks:/root/RaiBlocks
+
+  nano-node-monitor:
+    build: .
+    container_name: nano-node-monitor
+    hostname: nano-node-monitor
+    restart: unless-stopped
+    volumes:
+      - ./monitor:/var/www/html
+    ports:
+      - "80:80"
+
+networks:
+  default:
+    external:
+      name: nano_node_internal
