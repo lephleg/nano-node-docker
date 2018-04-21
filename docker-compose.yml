@@ -25,5 +25,16 @@ services:
     ports:
       - "80:80"
 
+  nano-node-watcher:
+    build: watcher
+    container_name: nano-node-watcher
+    environment:
+      watchport: 7076
+      watchname: nano-node
+      watchInterval: 30
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
 networks:
   default:
