@@ -1,4 +1,4 @@
-# NANO Node Docker stack
+# NANO Node Docker stack (with optional SSL support)
 
 ### **Description**
 
@@ -44,27 +44,29 @@ This will be your directory structure _after_ you've spinned up the containers:
 
 1. Clone this repository inside an empty directory in which your OS user has full write access:
 
-```
-$ git clone https://github.com/lephleg/nano-node-monitor-docker-stack.git .
-```
+    ```
+    $ git clone https://github.com/lephleg/nano-node-monitor-docker-stack.git .
+    ```
 
 2. Pull the Docker images and run the containers:
 
-```
-$ docker-compose up -d
-```
+    ```
+    $ docker-compose up -d
+    ```
 
 3. If all went well, you should now have the directory structure described in the section above and your containers runnning. Open the the NANO Node Monitor config file found in `nano-node-monitor/config.php`. Minimum configuration setup requires the following options set:
 
-```
-// the NANO node Docker container hostname
-$nanoNodeRPCIP   = 'nano-node';
+    ```
+    // the NANO node Docker container hostname
+    $nanoNodeRPCIP   = 'nano-node';
 
-// your NANO node account
-$nanoNodeAccount = 'xrb_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'; 
-```
+    // your NANO node account
+    $nanoNodeAccount = 'xrb_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'; 
+    ```
 
-5. That's it! Navigate to port 80 on your host to access the NANO Node Monitor dashboard.
+**That's it!** Navigate to port 80 on your host to access the NANO Node Monitor dashboard.
+
+___
 
 **SSL Installation steps (secure HTTPS) for domain/subdomain served hosts:** 
 
@@ -72,48 +74,48 @@ The following istallation steps will deploy NANO Docker stack for usage with enc
 
 1. Clone this repository inside an empty directory in which your OS user has full write access:
 
-```
-$ git clone https://github.com/lephleg/nano-node-monitor-docker-stack.git .
-```
+    ```
+    $ git clone https://github.com/lephleg/nano-node-monitor-docker-stack.git .
+    ```
 
 2. Edit and fill the following lines of the `docker-compose.letsencrypt.yml` file with your domain/subdomain name and your email address (will be used by Let's Encrypt to warn you of impeding certificate expiration):
 
-```
-    environment:
-      - VIRTUAL_HOST=mydomain.com
-      - LETSENCRYPT_HOST=mydomain.com
-      - LETSENCRYPT_EMAIL=myemailaddress@mail.com
-```
+    ```
+        environment:
+        - VIRTUAL_HOST=mydomain.com
+        - LETSENCRYPT_HOST=mydomain.com
+        - LETSENCRYPT_EMAIL=myemailaddress@mail.com
+    ```
 
-```
-    environment:
-      - DEFAULT_HOST=mydomain.com
-```
+    ```
+        environment:
+        - DEFAULT_HOST=mydomain.com
+    ```
 
-3. Pull the Docker images and run the containers using the Let's Encrypt enabled compose file (_Note: The first time this is launched it generates a new Diffie-Hellman group file. This process can take several minutes to complete, so please be patient_):
+3. Pull the Docker images and run the containers using the Let's Encrypt enabled compose file (_Note: The first time this is launched it takes several minutes to complete, so please be patient_):
 
-```
-$ docker-compose -f docker-compose.letsencrypt.yml up -d
-```
+    ```
+    $ docker-compose -f docker-compose.letsencrypt.yml up -d
+    ```
 
 4. Edit the configuration file as in basic installation (found in `nano-node-monitor/config.php`). Minimum configuration setup requires the following options set:
 
-```
-// the NANO node Docker container hostname
-$nanoNodeRPCIP   = 'nano-node';
+    ```
+    // the NANO node Docker container hostname
+    $nanoNodeRPCIP   = 'nano-node';
 
-// your NANO node account
-$nanoNodeAccount = 'xrb_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'; 
-```
+    // your NANO node account
+    $nanoNodeAccount = 'xrb_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'; 
+    ```
 
-5. Optional: If you're using an third-party firewall like [UFW](https://help.ubuntu.com/community/UFW) and have already applied the iptables security fix [How to fix the Docker and UFW security flaw](https://www.techrepublic.com/article/how-to-fix-the-docker-and-ufw-security-flaw/) (_highly recommended_), you should also verify that the port 443 required by the SSL setup is accepting incoming connections. In case of UFW the required commands to enable the port and reload your firewall are the following:
+5. **Optional:** If you're using an third-party firewall like [UFW](https://help.ubuntu.com/community/UFW) and have already applied the iptables security fix [How to fix the Docker and UFW security flaw](https://www.techrepublic.com/article/how-to-fix-the-docker-and-ufw-security-flaw/) (_highly recommended_), you should also verify that the port 443 required by the SSL setup is accepting incoming connections. In case of UFW the required commands to enable the port and reload your firewall are the following:
 
-```
-$ sudo ufw allow 443
-$ sudo ufw reload
-```
+    ```
+    $ sudo ufw allow 443
+    $ sudo ufw reload
+    ```
 
-6. That's it! Navigate to **https://mydomain.com** to access your SSL encrypted NANO Node Monitor dashboard, as well as its API endpoint (https://mydomain.com/api.php). You can now serve your NANO node data with robust security!
+**Done!** Navigate to **https://mydomain.com** to access your SSL encrypted NANO Node Monitor dashboard, as well as its API endpoint (https://mydomain.com/api.php). You can now serve your NANO node data with robust security!
 
 
 #### **Additional Notes/Tools**: 
