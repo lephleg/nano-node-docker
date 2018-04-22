@@ -1,5 +1,7 @@
-nano-node-monitor/config.php
 nano-node/config.json
 nano-node/data.ldb
 nano-node/data.ldb-lock
 nano-node/*/*.log
+nano-node-monitor/config.php
+nano-node-watchdog/.idea/*
+nano-node-watchdog/*/*.log
