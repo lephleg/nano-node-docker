@@ -1,5 +1,5 @@
-/src/
-/RaiBlocks/config.json
-/RaiBlocks/data.ldb
-/RaiBlocks/data.ldb-lock
-/RaiBlocks/*/*.log
+nano-node-monitor/config.php
+nano-node/config.json
+nano-node/data.ldb
+nano-node/data.ldb-lock
+nano-node/*/*.log

@@ -13,15 +13,15 @@ services:
       - "7075:7075"
       - "127.0.0.1:7076:7076"
     volumes:
-      - ./RaiBlocks:/root/RaiBlocks
+      - ./nano-node:/root/RaiBlocks
 
   nano-node-monitor:
-    build: .
+    image: nanotools/nanonodemonitor
     container_name: nano-node-monitor
     hostname: nano-node-monitor
     restart: unless-stopped
     volumes:
-      - ./monitor:/var/www/html
+      - ./nano-node-monitor:/opt/nanoNodeMonitor
     ports:
       - "80:80"
 
