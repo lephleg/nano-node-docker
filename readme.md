@@ -5,20 +5,17 @@
 This will build and deploy the following containers on your Docker host:
 
 * **nano-node** -- This is the official NANO node created from the official Docker Image (RPC is enabled but not publicly accessible)
-* **nano-node-monitor** -- This is the popular NANO Node Monitor PHP application built with a custom image containing: PHP7.2, Nginx, Composer & Supervisor.
+* **nano-node-monitor** -- This is the popular NANO Node Monitor PHP application based on [Nano Tools Docker image](https://hub.docker.com/r/nanotools/nanonodemonitor/).
 
 #### **Directory Structure**
+
+This will be your directory structure _after_ you've spinned up the containers:
+
 ```
-+-- RaiBlocks <mounted from the NANO node container>
-+-- resources
-|   +-- default
-|   +-- nginx.conf
-|   +-- supervisord.conf
-|   +-- www.conf
-+-- Dockerfile
 +-- docker-compose.yml
++-- nano-node-monitor <mounted config file>
++-- nano-node <mounted config file, database files and logs>
 +-- readme.md <this file>
-+-- monitor <NANO node monitor repository root mounted inside nano-monitor container>
 ```
 
 ### **Setup instructions using Docker natively (Windows 10/Linux/Mac)**
@@ -37,23 +34,20 @@ This will build and deploy the following containers on your Docker host:
 $ git clone https://github.com/lephleg/nano-node-monitor-docker-stack.git .
 ```
 
-2. Clone the original NANO Node Monitor source code repository in a new `monitor` folder with the command:
-
-```
-$ git clone https://github.com/NanoTools/nanoNodeMonitor.git monitor
-```
-
-3. You should now have the directory structure described above. Copy and edit the monitor config file (use `nano-node` as your `nanoNodeRPCIP` setting):
-
-```
-$ cp monitor/modules/config.sample.php src/modules/config.php 
-$ nano monitor/modules/config.php
-```
-
-4. Build and run your containers:
+2. Pull the Docker images and run the containers:
 
 ```
 $ docker-compose up -d
+```
+
+3. If all went well, you should now have the directory structure described in the section above and your containers runnning. Open the the NANO Node Monitor config file found in `nano-node-monitor/config.php`. Minimum configuration setup requires the following options set:
+
+```
+// the NANO node Docker container hostname
+$nanoNodeRPCIP   = 'nano-node';
+
+// your NANO node account
+$nanoNodeAccount = 'xrb_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'; 
 ```
 
 5. That's it! Navigate to port 80 on your host to access the NANO Node Monitor dashboard.
