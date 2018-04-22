@@ -1,0 +1,75 @@
+version: '3'
+
+services:
+  nano-node:
+    image: nanocurrency/nano:latest
+    container_name: nano-node
+    hostname: nano-node
+    environment:
+      - TERM=xterm
+    restart: unless-stopped
+    ports:
+      - "7075:7075/udp"
+      - "7075:7075"
+      - "127.0.0.1:7076:7076"
+    volumes:
+      - nano-node-logs:/root/RaiBlocks/log
+      - ./nano-node:/root/RaiBlocks
+
+  nano-node-monitor:
+    image: nanotools/nanonodemonitor
+    container_name: nano-node-monitor
+    hostname: nano-node-monitor
+    restart: unless-stopped
+    environment:
+      - VIRTUAL_HOST=mydomain.com
+      - LETSENCRYPT_HOST=mydomain.com
+      - LETSENCRYPT_EMAIL=myemailaddress@mail.com
+    volumes:
+      - ./nano-node-monitor:/opt/nanoNodeMonitor
+
+  nano-node-watchdog:
+    build: ./nano-node-watchdog/
+    image: nano-node-docker-stack/nano-node-watchdog
+    container_name: nano-node-watchdog
+    hostname: nano-node-watcher
+    restart: unless-stopped
+    volumes:
+      - nano-node-logs:/opt/nanoNodeLog
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./nano-node-watchdog/log:/opt/nanoNodeWatchdog/log
+
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    container_name: nginx-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      - DEFAULT_HOST=mydomain.com
+    volumes:
+      - nginx-proxy-v1:/etc/nginx/vhost.d
+      - nginx-proxy-v2:/usr/share/nginx/html
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - nginx-proxy-v3:/etc/nginx/certs
+    restart: always
+
+  letsencrypt-nginx-proxy-companion:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    container_name: nginx-proxy-letsencypt
+    volumes:
+      - nginx-proxy-v1:/etc/nginx/vhost.d
+      - nginx-proxy-v2:/usr/share/nginx/html
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - nginx-proxy-v3:/etc/nginx/certs
+    environment:
+      - NGINX_PROXY_CONTAINER=nginx-proxy
+
+networks:
+  default:
+
+volumes:
+  nano-node-logs:
+  nginx-proxy-v1:
+  nginx-proxy-v2:
+  nginx-proxy-v3:
