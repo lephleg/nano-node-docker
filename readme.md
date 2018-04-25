@@ -14,7 +14,7 @@ Optionally, if a domain name is available for the host, NANO Docker Stack can al
 
 * **nginx-proxy** -- This is an instance of the popular Nginx web server running in a reverse proxy setup, serving as a gateway for all incoming requests to your host.
 
-* **nginx-proxy-letsencypt** -- This is a lightweight companion container for the nginx-proxy. It allows the creation/renewal of Let's Encrypt certificates automatically.
+* **nginx-proxy-letsencrypt** -- This is a lightweight companion container for the nginx-proxy. It allows the creation/renewal of Let's Encrypt certificates automatically.
 
 #### **Directory Structure**
 
@@ -125,13 +125,13 @@ The following istallation steps will deploy NANO Docker stack for usage with enc
 * To display informations about your existing certificates, use the following command:
 
     ```
-    $ docker exec nginx-proxy-letsencypt /app/cert_status
+    $ docker exec nginx-proxy-letsencrypt /app/cert_status
     ```
 
-* To force the lnginx-proxy-letsencypt container to renew all certificates that are currently in use use the following command:
+* To force the lnginx-proxy-letsencrypt container to renew all certificates that are currently in use use the following command:
 
     ```
-    $ docker exec nginx-proxy-letsencypt /app/force_renew
+    $ docker exec nginx-proxy-letsencrypt /app/force_renew
     ```
 
 ### **NANO Node Watchdog**
