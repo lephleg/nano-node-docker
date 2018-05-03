@@ -37,6 +37,12 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./nano-node-watchdog/log:/opt/nanoNodeWatchdog/log
 
+  watchtower:
+    image: v2tec/watchtower
+    container_name: watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
 networks:
   default:
 
