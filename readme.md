@@ -7,6 +7,7 @@ This will build and deploy the following containers on your Docker host:
 * **nano-node** -- This is the official NANO node created from the official [NANO Docker Image](https://hub.docker.com/r/nanocurrency/nano/) (RPC is enabled but not publicly exposed).
 * **nano-node-monitor** -- This is the popular NANO Node Monitor PHP application based on [NanoTools's Docker image](https://hub.docker.com/r/nanotools/nanonodemonitor/).
 * **nano-node-watchdog** -- This is custom lightweight watcher container checking on node's health status every hour (checking code adapted from [dbachm123's nanoNodeScripts](https://github.com/dbachm123/nanoNodeScripts)).
+* **watchtower** -- A process for watching your Docker containers and automatically restarting them whenever their base image like the NANO Node is upgraded.
 
 #### **SSL Support with Let's Encrypt**
 
@@ -154,3 +155,4 @@ _**TODO**_: Send an email notification to the onwer if the node keeps crashing.
 * **[nanoNodeScripts](https://github.com/dbachm123/nanoNodeScripts)**
 * **[jwilder/nginx-proxy](https://github.com/jwilder/nginx-proxy)**
 * **[JrCs/docker-letsencrypt-nginx-proxy-companion](https://github.com/JrCs/docker-letsencrypt-nginx-proxy-companion)**
+* **[v2tec/watchtower](https://github.com/v2tec/watchtower)**
