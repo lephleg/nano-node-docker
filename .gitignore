@@ -2,6 +2,10 @@ nano-node/config.json
 nano-node/data.ldb
 nano-node/data.ldb-lock
 nano-node/*/*.log
+nano-node/backup/*.json
 nano-node-monitor/config.php
 nano-node-watchdog/.idea/*
 nano-node-watchdog/*/*.log
+/docker-compose.generated.yml
+/docker-compose.generated.yml-e
+/nano-node-monitor/config.php-e
