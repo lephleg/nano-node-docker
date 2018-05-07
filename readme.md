@@ -25,8 +25,6 @@ Open a bash terminal and fire up the installation script:
 $ ./setup.sh -s 
 ```
 
-![Screenshot](screenshot.png)
-
 **That's it!** You can now navigate to your host IP to check your Nano Node Monitor dashboard.
 
 #### **Install with SSL enabled**
@@ -39,8 +37,9 @@ $ ./setup.sh -sd mydomain.com -e myemail@example.com
 
 The email (-e) argument is optional and would used by Let's Encrypt to warn you of impeding certificate expiration.
 
-**Done!** Navigate to your domain name to check your Nano Node Monitor Dashboard over HTTPS!
+![Screenshot](screenshot.png)
 
+**Done!** Navigate to your domain name to check your Nano Node Monitor Dashboard over HTTPS!
 
 ### Self-configurable Installation
 
