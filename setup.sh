@@ -68,7 +68,7 @@ if [[ ! $existedWallet ]]; then
     [[ $quiet = 'false' ]] && printf "${yellow}No wallet found. Generating a new one... ${reset}"
 
     walletId=$(docker exec -it nano-node /usr/bin/rai_node --wallet_create | tr -d '\r')
-    address=$(docker exec nano-node /usr/bin/rai_node --account_create --wallet=$walletId | awk '{ print $NF}')
+    address=$(docker exec -it nano-node /usr/bin/rai_node --account_create --wallet=$walletId | awk '{ print $NF}')
     
     [[ $quiet = 'false' ]] && printf "${green}done.${reset}\n"
 else
@@ -80,7 +80,7 @@ else
 fi
 
 if [[ $quiet = 'false' && $displaySeed = 'true' ]]; then
-    seed=$(docker exec nano-node /usr/bin/rai_node --wallet_decrypt_unsafe --wallet=$walletId | grep 'Seed' | awk '{ print $NF}')
+    seed=$(docker exec -it nano-node /usr/bin/rai_node --wallet_decrypt_unsafe --wallet=$walletId | grep 'Seed' | awk '{ print $NF}')
 fi
 
 if [[ $quiet = 'false' ]]; then
