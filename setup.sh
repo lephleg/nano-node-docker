@@ -18,9 +18,22 @@ while getopts 'sqd:e:' flag; do
     d) domain="${OPTARG}" ;;
     e) email="${OPTARG}" ;;
     q) quiet='true' ;;
-    *) exit 0 ;;
+    *) exit 1 ;;
   esac
 done
+
+# VERIFY DOCKER AND DOCKER COMPOSE INSTALLATION
+docker -v 2>/dev/null
+if [ $? -ne 0 ]; then
+    echo "${red}Docker is not installed. Please follow the install instructions for your system at https://docs.docker.com/install/.${reset}";
+    exit 2
+fi
+
+docker-compose --version 2>/dev/null
+if [ $? -ne 0 ]; then
+    echo "${red}Docker Compose is not installed. Please follow the install instructions for your system at https://docs.docker.com/compose/install/.${reset}"
+    exit 2
+fi
 
 # SPIN UP THE APPROPRIATE STACK
 [[ $quiet = 'false' ]] && echo "${yellow}Pulling images and spinning up containers...${reset}"
