@@ -59,15 +59,15 @@ if [[ $fastSync = 'true' ]]; then
         wget -O todaysledger.7z https://nanonode.ninja/api/ledger/download -q --show-progress
         printf "${green}done.${reset}\n"
 
-        printf "${yellow}Unzipping and placing the files...${reset} "
-        7z x todaysledger.7z  -o ./nano-node -y
+        printf "${yellow}Unzipping and placing the files (takes a while)...${reset} "
+        7z x todaysledger.7z  -o./nano-node -y
         rm todaysledger.7z
         printf "${green}done.${reset}"
 
     else
         wget -O todaysledger.7z https://nanonode.ninja/api/ledger/download -q 
         docker-compose stop nano-node &> /dev/null
-        7z x todaysledger.7z  -o ./nano-node -y &> /dev/null
+        7z x todaysledger.7z  -o./nano-node -y &> /dev/null
         rm todaysledger.7z
     fi
 
@@ -130,20 +130,10 @@ if [[ ! $existedWallet ]]; then
     
     [[ $quiet = 'false' ]] && printf "${green}done.${reset}\n"
 else
-    if [[ $fastSync = 'true' ]]; then
-        [[ $quiet = 'false' ]] && echo "${yellow}Existing wallet found from fast-synced ledger. Removing and creating a new one...${reset} "
-        docker exec -it nano-node /usr/bin/rai_node --wallet_destroy --wallet=${existedWallet} | awk '{ print $NF}'
+    [[ $quiet = 'false' ]] && echo "${yellow}Existing wallet found.${reset}"
 
-        walletId=$(docker exec -it nano-node /usr/bin/rai_node --wallet_create | tr -d '\r')
-        address=$(docker exec -it nano-node /usr/bin/rai_node --account_create --wallet=$walletId | awk '{ print $NF}')
-    
-        [[ $quiet = 'false' ]] && printf "${green}done.${reset}\n"
-    else
-        [[ $quiet = 'false' ]] && echo "${yellow}Existing wallet found.${reset}"
-
-        address="$(docker exec -it nano-node /usr/bin/rai_node --wallet_list | grep 'xrb_' | awk '{ print $NF}' | tr -d '\r')"
-        walletId=$(echo $existedWallet | tr -d '\r')
-    fi
+    address="$(docker exec -it nano-node /usr/bin/rai_node --wallet_list | grep 'xrb_' | awk '{ print $NF}' | tr -d '\r')"
+    walletId=$(echo $existedWallet | tr -d '\r')
 
 fi
 
