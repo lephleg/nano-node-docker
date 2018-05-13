@@ -73,6 +73,8 @@ services:
 
 networks:
   default:
+    external:
+      name: nano-node-network
 
 volumes:
   nano-node-logs:

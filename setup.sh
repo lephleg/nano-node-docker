@@ -62,19 +62,21 @@ if [[ $fastSync = 'true' ]]; then
         printf "${yellow}Unzipping and placing the files...${reset} "
         7z x todaysledger.7z  -o ./nano-node -y
         rm todaysledger.7z
-        printf "${green}done.${reset} "
+        printf "${green}done.${reset}"
 
-    else 
+    else
         wget -O todaysledger.7z https://nanonode.ninja/api/ledger/download -q 
         docker-compose stop nano-node &> /dev/null
         7z x todaysledger.7z  -o ./nano-node -y &> /dev/null
-        docker-compose start nano-node &> /dev/null
+        rm todaysledger.7z
     fi
 
 fi
 
 # SPIN UP THE APPROPRIATE STACK
 [[ $quiet = 'false' ]] && echo "${yellow}Pulling images and spinning up containers...${reset}"
+
+docker network create nano-node-network &> /dev/null
 
 if [[ $domain ]]; then
     cp -rf docker-compose.letsencrypt.yml docker-compose.generated.yml
