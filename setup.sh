@@ -57,11 +57,11 @@ if [[ $fastSync = 'true' ]]; then
     if [[ $quiet = 'false' ]]; then
         printf "${yellow}Downloading latest ledger files for fast-syncing...${reset}\n"
         wget -O todaysledger.7z https://nanonode.ninja/api/ledger/download -q --show-progress
-        printf "${green}done.${reset}\n"
 
         printf "${yellow}Unzipping and placing the files (takes a while)...${reset} "
-        7z x todaysledger.7z  -o./nano-node -y
+        7z x todaysledger.7z  -o./nano-node -y &> /dev/null
         rm todaysledger.7z
+        printf "${green}done.${reset}\n"
 
     else
         wget -O todaysledger.7z https://nanonode.ninja/api/ledger/download -q 

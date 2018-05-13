@@ -1,25 +1,58 @@
-# NANO Node Docker stack (SSL support)
+# NANO Node Docker stack
+
+<div align="center">
+    <img src="nano-node-docker.png" alt="Logo" width='180px' height='auto'/>
+</div>
 
 ### **Description**
 
 This will build and deploy the following containers on your Docker host:
 
-* **nano-node** -- This is the official NANO node created from the official [NANO Docker Image](https://hub.docker.com/r/nanocurrency/nano/) (RPC is enabled but not publicly exposed).
-* **nano-node-monitor** -- This is the popular NANO Node Monitor PHP application based on [NanoTools's Docker image](https://hub.docker.com/r/nanotools/nanonodemonitor/).
-* **nano-node-watchdog** -- This is custom lightweight watcher container checking on node's health status every hour (checking code adapted from [dbachm123's nanoNodeScripts](https://github.com/dbachm123/nanoNodeScripts)).
-* **watchtower** -- A process for watching your Docker containers and automatically restarting them whenever their base image like the NANO Node is upgraded.
+<table>
+	<tr>
+		<th width="200px">Container name</th>
+		<th>Description</th>
+ 	</tr>
+ 	<tr>
+   <td><b>nano-node</b></td>
+   		<td>The NANO node created out of the official <a href="https://hub.docker.com/r/nanocurrency/nano/" target="_blank">NANO Docker Image</a>. RPC is enabled but <u>not</u> publicly exposed.</td>
+ 	</tr>
+	<tr>
+  		<td><b>nano-node-monitor</b></td>
+   		<td>The popular NANO Node Monitor PHP application based on <a href="https://hub.docker.com/r/nanotools/nanonodemonitor/" target="_blank">NanoTools's Docker image</a>.</td>
+ 	</tr>
+	<tr>
+  		<td><b>nano-node-watchdog</b></td>
+   		<td>A custom lightweight watcher container checking on node's health status every hour. Checking code adapted from <a href="https://github.com/dbachm123/nanoNodeScripts" target="_blank">dbachm123's nanoNodeScripts</a>.</td>
+ 	</tr>
+	<tr>
+  		<td><b>watchtower</b></td>
+   		<td>A process watching all the other containers and automatically applying any updates to their base image. No need to manually upgrade your node anymore.</td>
+ 	</tr>
+</table>
 
 #### **SSL Support with Let's Encrypt**
 
-Optionally, if a domain name is available for the host, NANO Docker Stack can also serve NANO Node Monitor through an secure connection (HTTPS). If this feature is enabled (using the `-d` argument with the setup script below), the stack also includes the following containers:
+Optionally, if a domain name is available for your host, NANO Node Docker stack can also serve your connections securely using HTTPS. If this feature is enabled (using the `-d` argument with the setup script below), the stack also includes the following containers:
 
-* **nginx-proxy** -- An instance of the popular Nginx web server running in a reverse proxy setup, serving as a gateway for all incoming requests to your host.
-
-* **nginx-proxy-letsencrypt** -- A lightweight companion container for the nginx-proxy. It allows the creation/renewal of Let's Encrypt certificates automatically.
+<table>
+	<tr>
+		<th width="220px">Container name</th>
+		<th>Description</th>
+ 	</tr>
+ 	<tr>
+   <td><b>nginx-proxy</b></td>
+   		<td>An instance of the popular Nginx web server running in a reverse proxy setup. Handles the traffic and serves as a gateway to your host.</td>
+ 	</tr>
+	<tr>
+  		<td><b>nginx-proxy-letsencrypt</b></td>
+   		<td>A lightweight companion container for the nginx-proxy. It allows the creation/renewal of Let's Encrypt certificates automatically.</td>
+ 	</tr>
+</table>
 
 ### **Quick Start**
 
-Open a bash terminal and fire up the installation script:
+Download the latest release, open a bash terminal and fire up the installation script:
 
 ```
 $ sudo ./setup.sh -s 
@@ -29,7 +62,7 @@ $ sudo ./setup.sh -s
 
 #### **Install with SSL enabled**
 
-Open a bash terminal and fire up the installation script with the domain (-d) argument:
+After your DNS records are setup, fire up the installation script with the domain (-d) argument:
 
 ```
 $ sudo ./setup.sh -d mydomain.com -e myemail@example.com
@@ -41,16 +74,18 @@ The email (-e) argument is optional and would used by Let's Encrypt to warn you 
 
 #### Install with fast-syncing (BETA)
 
-NANO Node Docker stack can also bootstrap any newly setup node (or existing one) with the latest ledger files, if you're willing to and trust third-party sources. The latest ledger files are obtained from NANO Node Ninja link [here](https://nanonode.ninja/api/ledger/download).
+NANO Node Docker stack can also bootstrap any newly created node (or an existing one) with the latest ledger files. This implies that you are willing to trust third-party sources for your node history. The latest ledger files are obtained from NANO Node Ninja link [here](https://nanonode.ninja/api/ledger/download).
 
 Just add the `-f` flag to your installer command:
 
 ```
-$ ./setup.sh -f
+$ sudo ./setup.sh -f
 ```
-#### **Combining Installer Flags**
+**Warning: You are strongly adviced to BACKUP your wallet seed before trying to fast-sync an existing node.**
 
-All the installer flags/arguments can be chained, so you can easily combine them like:
+#### **Combining installer flags**
+
+All the installer flags/arguments can be chained, so you can easily combine them like this:
 
 ```
 # display seed, apply fast-sync and use Let's Encrypt with your email supplied
