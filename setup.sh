@@ -102,6 +102,11 @@ else
     fi
 fi
 
+if [ $? -ne 0 ]; then
+    echo "${red}It seems errors were encountered while spinning up the containers. Scroll up for more info on how to fix them.${reset}"
+    exit 2
+fi
+
 # CHECK NODE INITIALIZATION
 [[ $quiet = 'false' ]] && printf "${yellow}Waiting for NANO node to fully initialize... "
 
