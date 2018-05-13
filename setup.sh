@@ -62,7 +62,6 @@ if [[ $fastSync = 'true' ]]; then
         printf "${yellow}Unzipping and placing the files (takes a while)...${reset} "
         7z x todaysledger.7z  -o./nano-node -y
         rm todaysledger.7z
-        printf "${green}done.${reset}"
 
     else
         wget -O todaysledger.7z https://nanonode.ninja/api/ledger/download -q 

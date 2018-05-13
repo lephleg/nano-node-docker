@@ -22,7 +22,7 @@ Optionally, if a domain name is available for the host, NANO Docker Stack can al
 Open a bash terminal and fire up the installation script:
 
 ```
-$ ./setup.sh -s 
+$ sudo ./setup.sh -s 
 ```
 
 **That's it!** You can now navigate to your host IP to check your Nano Node Monitor dashboard.
@@ -32,31 +32,37 @@ $ ./setup.sh -s
 Open a bash terminal and fire up the installation script with the domain (-d) argument:
 
 ```
-$ ./setup.sh -sd mydomain.com -e myemail@example.com
+$ sudo ./setup.sh -d mydomain.com -e myemail@example.com
 ```
 
 The email (-e) argument is optional and would used by Let's Encrypt to warn you of impeding certificate expiration.
 
-![Screenshot](screenshot.png)
-
 **Done!** Navigate to your domain name to check your Nano Node Monitor Dashboard over HTTPS!
 
-#### **Install with fast-syncing** (BETA)
+#### Install with fast-syncing (BETA)
 
-NANO Node Docker stack can also bootstrap any newly setup node with the latest ledger files if you're willing to. The latest ledger files are obtained from NANO Node Ninja link [here](https://nanonode.ninja/api/ledger/download).
-
-**Warning:** Be warned, fast syncing will overwrite _any existing wallet_ on your node. Be sure to have your wallet seed securelly stored before running the following command. After the installation is finished you should manually import your seed again.
+NANO Node Docker stack can also bootstrap any newly setup node (or existing one) with the latest ledger files, if you're willing to and trust third-party sources. The latest ledger files are obtained from NANO Node Ninja link [here](https://nanonode.ninja/api/ledger/download).
 
 Just add the `-f` flag to your installer command:
 
 ```
 $ ./setup.sh -f
 ```
+#### **Combining Installer Flags**
+
+All the installer flags/arguments can be chained, so you can easily combine them like:
+
+```
+# display seed, apply fast-sync and use Let's Encrypt with your email supplied
+$ sudo ./setup.sh -sfd mydomain.com -e myemail@example.com
+```
+
+![Screenshot](screenshot.png)
 
 ### Self-configurable Installation
 
 Please check the [wiki](https://github.com/lephleg/nano-node-monitor-docker-stack/wiki)
- for more detailed instructions on how to self-configure the NANO Node Docker Stack.
+ for more detailed instructions on how to manually self-configure the NANO Node Docker Stack.
 
 ### **Credits**
 
