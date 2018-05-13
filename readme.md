@@ -41,6 +41,18 @@ The email (-e) argument is optional and would used by Let's Encrypt to warn you 
 
 **Done!** Navigate to your domain name to check your Nano Node Monitor Dashboard over HTTPS!
 
+#### **Install with fast-syncing** (BETA)
+
+NANO Node Docker stack can also bootstrap any newly setup node with the latest ledger files if you're willing to. The latest ledger files are obtained from NANO Node Ninja link [here](https://nanonode.ninja/api/ledger/download).
+
+**Warning:** Be warned, fast syncing will overwrite _any existing wallet_ on your node. Be sure to have your wallet seed securelly stored before running the following command. After the installation is finished you should manually import your seed again.
+
+Just add the `-f` flag to your installer command:
+
+```
+$ ./setup.sh -f
+```
+
 ### Self-configurable Installation
 
 Please check the [wiki](https://github.com/lephleg/nano-node-monitor-docker-stack/wiki)

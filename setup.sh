@@ -10,29 +10,67 @@ reset=`tput sgr0`
 # FLAGS & ARGUMENTS
 quiet='false'
 displaySeed='false'
+fastSync='false'
 domain=''
 email=''
-while getopts 'sqd:e:' flag; do
+while getopts 'sqfd:e:' flag; do
   case "${flag}" in
     s) displaySeed='true' ;;
     d) domain="${OPTARG}" ;;
     e) email="${OPTARG}" ;;
     q) quiet='true' ;;
+    f) fastSync='true' ;;
     *) exit 1 ;;
   esac
 done
 
-# VERIFY DOCKER AND DOCKER COMPOSE INSTALLATION
-docker -v 2>/dev/null
+# VERIFY TOOLS INSTALLATIONS
+docker -v &> /dev/null
 if [ $? -ne 0 ]; then
     echo "${red}Docker is not installed. Please follow the install instructions for your system at https://docs.docker.com/install/.${reset}";
     exit 2
 fi
 
-docker-compose --version 2>/dev/null
+docker-compose --version &> /dev/null
 if [ $? -ne 0 ]; then
     echo "${red}Docker Compose is not installed. Please follow the install instructions for your system at https://docs.docker.com/compose/install/.${reset}"
     exit 2
+fi
+
+if [[ $fastSync = 'true' ]]; then
+    wget --version &> /dev/null
+    if [ $? -ne 0 ]; then
+        echo "${red}wget is not installed and is required for fast-syncing.${reset}";
+        exit 2
+    fi
+
+    7z &> /dev/null
+    if [ $? -ne 0 ]; then
+        echo "${red}7-Zip is not installed and is required for fast-syncing.${reset}";
+        exit 2
+    fi
+fi
+
+# FAST-SYNCING
+if [[ $fastSync = 'true' ]]; then
+
+    if [[ $quiet = 'false' ]]; then
+        printf "${yellow}Downloading latest ledger files for fast-syncing...${reset}\n"
+        wget -O todaysledger.7z https://nanonode.ninja/api/ledger/download -q --show-progress
+        printf "${green}done.${reset}\n"
+
+        printf "${yellow}Unzipping and placing the files...${reset} "
+        7z x todaysledger.7z  -o ./nano-node -y
+        rm todaysledger.7z
+        printf "${green}done.${reset} "
+
+    else 
+        wget -O todaysledger.7z https://nanonode.ninja/api/ledger/download -q 
+        docker-compose stop nano-node &> /dev/null
+        7z x todaysledger.7z  -o ./nano-node -y &> /dev/null
+        docker-compose start nano-node &> /dev/null
+    fi
+
 fi
 
 # SPIN UP THE APPROPRIATE STACK
@@ -52,13 +90,13 @@ if [[ $domain ]]; then
     if [[ $quiet = 'false' ]]; then
         docker-compose -f docker-compose.generated.yml up -d
     else
-        docker-compose -f docker-compose.generated.yml up -d 2>/dev/null
+        docker-compose -f docker-compose.generated.yml up -d &> /dev/null
     fi
 else
     if [[ $quiet = 'false' ]]; then
         docker-compose up -d
     else
-        docker-compose up -d 2>/dev/null
+        docker-compose up -d &> /dev/null
     fi
 fi
 
@@ -85,10 +123,20 @@ if [[ ! $existedWallet ]]; then
     
     [[ $quiet = 'false' ]] && printf "${green}done.${reset}\n"
 else
-    [[ $quiet = 'false' ]] && echo "${yellow}Existing wallet found.${reset}"
+    if [[ $fastSync = 'true' ]]; then
+        [[ $quiet = 'false' ]] && echo "${yellow}Existing wallet found from fast-synced ledger. Removing and creating a new one...${reset} "
+        docker exec -it nano-node /usr/bin/rai_node --wallet_destroy --wallet=${existedWallet} | awk '{ print $NF}'
 
-    address="$(docker exec -it nano-node /usr/bin/rai_node --wallet_list | grep 'xrb_' | awk '{ print $NF}' | tr -d '\r')"
-    walletId=$(echo $existedWallet | tr -d '\r')
+        walletId=$(docker exec -it nano-node /usr/bin/rai_node --wallet_create | tr -d '\r')
+        address=$(docker exec -it nano-node /usr/bin/rai_node --account_create --wallet=$walletId | awk '{ print $NF}')
+    
+        [[ $quiet = 'false' ]] && printf "${green}done.${reset}\n"
+    else
+        [[ $quiet = 'false' ]] && echo "${yellow}Existing wallet found.${reset}"
+
+        address="$(docker exec -it nano-node /usr/bin/rai_node --wallet_list | grep 'xrb_' | awk '{ print $NF}' | tr -d '\r')"
+        walletId=$(echo $existedWallet | tr -d '\r')
+    fi
 
 fi
 
