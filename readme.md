@@ -107,3 +107,9 @@ Please check the [wiki](https://github.com/lephleg/nano-node-monitor-docker-stac
 * **[jwilder/nginx-proxy](https://github.com/jwilder/nginx-proxy)**
 * **[JrCs/docker-letsencrypt-nginx-proxy-companion](https://github.com/JrCs/docker-letsencrypt-nginx-proxy-companion)**
 * **[v2tec/watchtower](https://github.com/v2tec/watchtower)**
+
+### **Donate**
+
+If you really liked this tool, just give this project a star so more people get to know it. Cheers! :)
+
+You can also find my representative link on the description (but if you've followed to this repo you should already have set  yours up already!).
