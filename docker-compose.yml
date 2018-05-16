@@ -24,7 +24,7 @@ services:
     volumes:
       - ./nano-node-monitor:/opt/nanoNodeMonitor
     ports:
-      - "8080:80"
+      - "80:80"
 
   nano-node-watchdog:
     build: ./nano-node-watchdog/ 
