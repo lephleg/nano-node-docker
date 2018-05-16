@@ -85,14 +85,18 @@ $ sudo ./setup.sh -f
 
 #### **Combining installer flags**
 
-All the installer flags/arguments can be chained, so you can easily combine them like this:
+All the installer flags can be chained, so you can easily combine them like this:
 
 ```
 # display seed, apply fast-sync and use Let's Encrypt with your email supplied
 $ sudo ./setup.sh -sfd mydomain.com -e myemail@example.com
 ```
 
-![Screenshot](screenshot.png)
+<div align="center">
+    <img src="screenshot.png" alt="Screenshot" width='680px' height='auto'/>
+</div>
+
+You can find more about the available flags on the [wiki](https://github.com/lephleg/nano-node-docker/wiki/Installer-flags-&-arguments).
 
 ### Self-configurable Installation
 
