@@ -13,7 +13,6 @@ services:
       - "7075:7075"
       - "127.0.0.1:7076:7076"
     volumes:
-      - nano-node-logs:/root/RaiBlocks/log
       - ./nano-node:/root/RaiBlocks
 
   nano-node-monitor:
@@ -33,7 +32,7 @@ services:
     hostname: nano-node-watcher
     restart: unless-stopped
     volumes:
-      - nano-node-logs:/opt/nanoNodeLog
+      - ./nano-node/log:/opt/nanoNodeLog
       - /var/run/docker.sock:/var/run/docker.sock
       - ./nano-node-watchdog/log:/opt/nanoNodeWatchdog/log
 
@@ -49,4 +48,3 @@ networks:
       name: nano-node-network
 
 volumes:
-  nano-node-logs:
