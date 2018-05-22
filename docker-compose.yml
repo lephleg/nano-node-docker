@@ -46,5 +46,3 @@ networks:
   default:
     external:
       name: nano-node-network
-
-volumes:
