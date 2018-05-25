@@ -41,6 +41,7 @@ services:
   nginx-proxy:
     image: jwilder/nginx-proxy
     container_name: nginx-proxy
+    restart: unless-stopped
     ports:
       - "80:80"
       - "443:443"
@@ -56,6 +57,7 @@ services:
   letsencrypt-nginx-proxy-companion:
     image: jrcs/letsencrypt-nginx-proxy-companion
     container_name: nginx-proxy-letsencrypt
+    restart: unless-stopped
     volumes:
       - nginx-proxy-v1:/etc/nginx/vhost.d
       - nginx-proxy-v2:/usr/share/nginx/html
@@ -67,6 +69,7 @@ services:
   watchtower:
     image: v2tec/watchtower
     container_name: watchtower
+    restart: unless-stopped
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 
