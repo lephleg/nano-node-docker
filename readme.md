@@ -58,7 +58,46 @@ Download the latest release, open a bash terminal and fire up the installation s
 $ sudo ./setup.sh -s 
 ```
 
-**That's it!** You can now navigate to your host IP to check your Nano Node Monitor dashboard.
+**That's it!** You can now navigate to your host IP to check your Nano Node Monitor dashboard. **Write down** your wallet seed as it appears on the output of the installer.
+
+#### Available command flags/arguments
+
+The following flags are available when running the stack installer:
+
+<table>
+	<tr>
+		<th width="20px">Flag</th>
+<th width="180px">Argument</th>
+		<th>Description</th>
+ 	</tr>
+ 	<tr>
+   <td><b>-s</b></td>
+   <td>-</td>
+   		<td>Prints the unecrypted seed of the node wallet during the setup (in some cases you may want to avoid this for security purposes).</td>
+ 	</tr>
+	<tr>
+  		<td><b>-f</b></td>
+<td>-</td>
+   		<td>Enables fast-syncing by fetching the latest ledger and placing it into <i>/root/Raiblocks/</i> inside <b>nano-node</b> container.</td>
+ 	</tr>
+	<tr>
+  		<td><b>-d</b></td>
+<td>your domain name</td>
+   		<td>Sets the domain name to be used. Required for SSL-enabled setups.</td>
+ 	</tr>
+	<tr>
+  		<td><b>-e</b></td>
+<td>your email address</td>
+   		<td>Sets your email for Let's Encrypt certificate notifications. Optional for SSL-enabled setups.</td>
+ 	</tr>
+	<tr>
+  		<td><b>-q</b></td>
+<td>-</td>
+   		<td>Quiet mode. Hides any output</td>
+ 	</tr>
+</table>
+
+### Examples
 
 #### **Install with SSL enabled**
 
@@ -96,7 +135,7 @@ $ sudo ./setup.sh -sfd mydomain.com -e myemail@example.com
     <img src="screenshot.png" alt="Screenshot" width='680px' height='auto'/>
 </div>
 
-You can find more about the available flags on the [wiki](https://github.com/lephleg/nano-node-docker/wiki/Installer-flags-&-arguments).
+
 
 ### Self-configurable Installation
 
