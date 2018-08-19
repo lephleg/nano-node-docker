@@ -40,6 +40,7 @@ services:
     image: v2tec/watchtower
     container_name: watchtower
     restart: unless-stopped
+    command: watchtower nano-node nano-node-monitor
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 
