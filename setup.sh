@@ -177,15 +177,15 @@ fi
 sed -i -e "s/\/\/ \$welcomeMsg.*;/\$welcomeMsg = 'Welcome! This node was setup using <a href=\"https:\/\/github.com\/lephleg\/nano-node-docker\" target=\"_blank\">NANO Node Docker<\/a>!';/g" ./nano-node-monitor/config.php
 sed -i -e "s/\/\/ \$blockExplorer.*;/\$blockExplorer = 'meltingice';/g" ./nano-node-monitor/config.php
 
-# remove carriage returns that may have been included by sed replacements
-sed -i 's/^M//g' ./nano-node-monitor/config.php
+# remove any carriage returns may have been included by sed replacements
+sed -i -e 's/\r//g' ./nano-node-monitor/config.php
 
 [[ $quiet = 'false' ]] && printf "${green}done.${reset}\n"
 
 if [[ $quiet = 'false' ]]; then
-    echo "${yellow} ------------------------------------------------------------------------------"
+    echo "${yellow} ---------------------------------------------------------------------"
     echo "${green} ${bold}Congratulations! NANO Node Docker stack has been setup successfully!${reset}"
-    echo "${yellow} ------------------------------------------------------------------------------ ${reset}"
+    echo "${yellow} --------------------------------------------------------------------- ${reset}"
     if [[ $domain ]]; then
         echo "${yellow}Open a browser and navigate to ${green}https://$domain${yellow} to check your monitor."
     else
