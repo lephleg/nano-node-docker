@@ -6,7 +6,9 @@
 
 ### **Description**
 
-This will build and deploy the following containers on your Docker host:
+**Install a NANO node on your server with a vast variety of tools in a couple on minutes!** 💫
+
+This project will build and deploy the following containers on your Docker host:
 
 <table>
 	<tr>
@@ -33,7 +35,7 @@ This will build and deploy the following containers on your Docker host:
 
 #### **SSL Support with Let's Encrypt**
 
-Optionally, if a domain name is available for your host, NANO Node Docker stack can also serve your connections securely using HTTPS. If this feature is enabled (using the `-d` argument with the setup script below), the stack also includes the following containers:
+Optionally, if a domain name is available for your host, NANO Node Docker can also serve your monitor securely using HTTPS. If this feature is enabled (using the `-d` argument with the installer), the stack will also include the following containers:
 
 <table>
 	<tr>
@@ -52,13 +54,13 @@ Optionally, if a domain name is available for your host, NANO Node Docker stack 
 
 ### **Quick Start**
 
-Download the latest release, open a bash terminal and fire up the installation script:
+Download or clone the latest release, open a bash terminal and fire up the installation script:
 
 ```
 $ sudo ./setup.sh -s 
 ```
 
-**That's it!** You can now navigate to your host IP to check your Nano Node Monitor dashboard. **Write down** your wallet seed as it appears on the output of the installer.
+**That's it!** You can now navigate to your host IP to check your Nano Node Monitor dashboard. **Do not forget to write down** your wallet seed as it appears in the output of the installer.
 
 #### Available command flags/arguments
 
@@ -111,36 +113,35 @@ The email (-e) argument is optional and would used by Let's Encrypt to warn you 
 
 **Done!** Navigate to your domain name to check your Nano Node Monitor Dashboard over HTTPS!
 
-#### Install with fast-syncing (BETA)
+#### Install with fast-syncing
 
-NANO Node Docker stack can also bootstrap any newly created node (or an existing one) with the latest ledger files. This implies that you are willing to trust third-party sources for your node history. The latest ledger files are obtained from NANO Node Ninja link [here](https://nanonode.ninja/api/ledger/download).
+NANO Node Docker stack can also bootstrap any newly created node (or an existing one) with the latest ledger files. This implies that you are willing to trust third-party sources for your node history. The latest ledger files are obtained from the NANO Node Ninja link [here](https://nanonode.ninja/api/ledger/download).
 
 Just add the `-f` flag to your installer command:
 
 ```
 $ sudo ./setup.sh -f
 ```
-**Warning: You are strongly adviced to BACKUP your wallet seed before trying to fast-sync an existing node.**
+**WARNING: You are strongly adviced to BACKUP your wallet seed before trying to fast-sync an existing node.**
 
 #### **Combining installer flags**
 
 All the installer flags can be chained, so you can easily combine them like this:
 
 ```
-# display seed, apply fast-sync and use Let's Encrypt with your email supplied
 $ sudo ./setup.sh -sfd mydomain.com -e myemail@example.com
 ```
+
+(_display seed, apply fast-sync and use Let's Encrypt with your email supplied_)
 
 <div align="center">
     <img src="screenshot.png" alt="Screenshot" width='680px' height='auto'/>
 </div>
 
-
-
 ### Self-configurable Installation
 
-Please check the [wiki](https://github.com/lephleg/nano-node-monitor-docker-stack/wiki)
- for more detailed instructions on how to manually self-configure the NANO Node Docker Stack.
+Please check the [wiki](https://github.com/lephleg/nano-node-docker/wiki)
+ for more detailed instructions on how to manually self-configure NANO Node Docker.
 
 ### **Credits**
 
@@ -151,8 +152,6 @@ Please check the [wiki](https://github.com/lephleg/nano-node-monitor-docker-stac
 * **[JrCs/docker-letsencrypt-nginx-proxy-companion](https://github.com/JrCs/docker-letsencrypt-nginx-proxy-companion)**
 * **[v2tec/watchtower](https://github.com/v2tec/watchtower)**
 
-### **Donate**
+### **Support**
 
-If you really liked this tool, just give this project a star so more people get to know it. Cheers! :)
-
-You can also find my representative link on the description (but if you've followed to this repo you should already have set  yours up already!).
+If you really liked this tool, **just give this project a star** ⭐️ so more people get to know it. Cheers! :)
