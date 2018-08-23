@@ -171,7 +171,13 @@ if [[ $domain ]]; then
     sed -i -e "s/\/\/ \$nanoNodeName.*;/\$nanoNodeName = '$domain';/g" ./nano-node-monitor/config.php
 else 
     ipAddress=$(curl -s v4.ifconfig.co | awk '{ print $NF}' | tr -d '\r')
-    sed -i -e "s/\/\/ \$nanoNodeName.*;/\$nanoNodeName = 'nano-node-docker-stack-$ipAddress';/g" ./nano-node-monitor/config.php
+
+    # in case of an ipv6 address, add square brackets
+    if [[ $ipAddress =~ .*:.* ]]; then
+        ipAddress="[$ipAddress]"
+    fi
+
+    sed -i -e "s/\/\/ \$nanoNodeName.*;/\$nanoNodeName = 'nano-node-docker-$ipAddress';/g" ./nano-node-monitor/config.php
 fi
 
 sed -i -e "s/\/\/ \$welcomeMsg.*;/\$welcomeMsg = 'Welcome! This node was setup using <a href=\"https:\/\/github.com\/lephleg\/nano-node-docker\" target=\"_blank\">NANO Node Docker<\/a>!';/g" ./nano-node-monitor/config.php
