@@ -13,13 +13,15 @@ displaySeed='false'
 fastSync='false'
 domain=''
 email=''
-while getopts 'sqfd:e:' flag; do
+tag=''
+while getopts 'sqfd:e:t:' flag; do
   case "${flag}" in
     s) displaySeed='true' ;;
     d) domain="${OPTARG}" ;;
     e) email="${OPTARG}" ;;
     q) quiet='true' ;;
     f) fastSync='true' ;;
+    t) tag="${OPTARG}" ;;
     *) exit 1 ;;
   esac
 done
@@ -80,6 +82,10 @@ docker network create nano-node-network &> /dev/null
 if [[ $domain ]]; then
     cp -rf docker-compose.letsencrypt.yml docker-compose.generated.yml
 
+    if [[ $tag ]]; then
+        sed -i -e "s/    image: nanocurrency\/nano:latest/    image: nanocurrency\/nano:$tag/g" docker-compose.generated.yml
+    fi
+
     sed -i -e "s/      - VIRTUAL_HOST=mydomain.com/      - VIRTUAL_HOST=$domain/g" docker-compose.generated.yml
     sed -i -e "s/      - LETSENCRYPT_HOST=mydomain.com/      - LETSENCRYPT_HOST=$domain/g" docker-compose.generated.yml
     sed -i -e "s/      - DEFAULT_HOST=mydomain.com/      - DEFAULT_HOST=$domain/g" docker-compose.generated.yml
@@ -94,6 +100,11 @@ if [[ $domain ]]; then
         docker-compose -f docker-compose.generated.yml up -d &> /dev/null
     fi
 else
+
+    if [[ $tag ]]; then
+        sed -i -e "s/    image: nanocurrency\/nano:latest/    image: nanocurrency\/nano:$tag/g" docker-compose.yml
+    fi
+
     if [[ $quiet = 'false' ]]; then
         docker-compose up -d
     else
