@@ -9,3 +9,4 @@ nano-node-watchdog/*/*.log
 /docker-compose.generated.yml
 /docker-compose.generated.yml-e
 /nano-node-monitor/config.php-e
+/settings
