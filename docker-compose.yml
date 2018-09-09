@@ -1,19 +1,19 @@
 version: '3'
 
 services:
-  nano-node:
-    image: nanocurrency/nano:latest
-    container_name: nano-node
-    hostname: nano-node
+  nano-beta-node:
+    image: nanocurrency/nano-beta:latest
+    container_name: nano-beta-node
+    hostname: nano-beta-node
     environment:
       - TERM=xterm
     restart: unless-stopped
     ports:
-      - "7075:7075/udp"
-      - "7075:7075"
-      - "127.0.0.1:7076:7076"
+      - "54000:54000/udp"
+      - "54000:54000"
+      - "127.0.0.1:55000:55000"
     volumes:
-      - ./nano-node:/root/RaiBlocks
+      - ./nano-beta-node:/root/RaiBlocksBeta
 
   nano-node-monitor:
     image: nanotools/nanonodemonitor
@@ -32,7 +32,7 @@ services:
     hostname: nano-node-watcher
     restart: unless-stopped
     volumes:
-      - ./nano-node/log:/opt/nanoNodeLog
+      - ./nano-beta-node/log:/opt/nanoNodeLog
       - /var/run/docker.sock:/var/run/docker.sock
       - ./nano-node-watchdog/log:/opt/nanoNodeWatchdog/log
 
@@ -40,11 +40,11 @@ services:
     image: v2tec/watchtower
     container_name: watchtower
     restart: unless-stopped
-    command: watchtower nano-node nano-node-monitor
+    command: watchtower nano-beta-node nano-node-monitor
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 
 networks:
   default:
     external:
-      name: nano-node-network
+      name: nano-beta-node-network

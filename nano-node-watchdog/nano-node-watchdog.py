@@ -13,8 +13,8 @@ from datetime import datetime
 # -----------------------------------------------------------------------
 # some global constants - adapt these to your local node setup
 # -----------------------------------------------------------------------
-node_ip = 'nano-node'  # node's local IP
-node_port = '7076'  # RPC port
+node_ip = 'nano-beta-node'  # node's local IP
+node_port = '55000'  # RPC port
 log_file = "/opt/nanoNodeWatchdog/log/watchdog.log"  # log file for this script
 node_log_dir = "/opt/nanoNodeLog"  # the log directory of the Nano node
 # -----------------------------------------------------------------------
