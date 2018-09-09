@@ -8,7 +8,16 @@
 
 **Install a NANO node on your server with a vast variety of tools in a couple on minutes!** 💫
 
-***Note:** For hosting a NANO node in the BETA network, checkout the "<a href="https://github.com/lephleg/nano-node-docker/tree/beta">**beta**</a>" branch.*
+<table>
+	<tr>
+        <th>Note</th>
+    </tr>
+    	<tr>
+        <td>
+        For hosting a testnet NANO node in the BETA network, please checkout the "<a href="https://github.com/lephleg/nano-node-docker/tree/beta">beta</a>" branch.
+        </td>
+    </tr>
+</table>
 
 This project will build and deploy the following containers on your Docker host:
 
