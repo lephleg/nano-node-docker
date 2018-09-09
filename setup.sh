@@ -26,6 +26,8 @@ while getopts 'sqfd:e:t:' flag; do
   esac
 done
 
+echo $@ > settings
+
 # VERIFY TOOLS INSTALLATIONS
 docker -v &> /dev/null
 if [ $? -ne 0 ]; then
@@ -65,29 +67,29 @@ fi
 docker network create nano-beta-node-network &> /dev/null
 
 if [[ $domain ]]; then
-    cp -rf docker-compose.letsencrypt.yml docker-compose.generated.yml
 
     if [[ $tag ]]; then
-        sed -i -e "s/    image: nanocurrency\/nano-beta:latest/    image: nanocurrency\/nano-beta:$tag/g" docker-compose.generated.yml
+        sed -i -e "s/    image: nanocurrency\/nano-beta:.*/    image: nanocurrency\/nano-beta:$tag/g" docker-compose.letsencrypt.yml
     fi
 
-    sed -i -e "s/      - VIRTUAL_HOST=mydomain.com/      - VIRTUAL_HOST=$domain/g" docker-compose.generated.yml
-    sed -i -e "s/      - LETSENCRYPT_HOST=mydomain.com/      - LETSENCRYPT_HOST=$domain/g" docker-compose.generated.yml
-    sed -i -e "s/      - DEFAULT_HOST=mydomain.com/      - DEFAULT_HOST=$domain/g" docker-compose.generated.yml
+    sed -i -e "s/      - VIRTUAL_HOST=.*/      - VIRTUAL_HOST=$domain/g" docker-compose.letsencrypt.yml
+    sed -i -e "s/      - LETSENCRYPT_HOST=.*/      - LETSENCRYPT_HOST=$domain/g" docker-compose.letsencrypt.yml
+    sed -i -e "s/      - DEFAULT_HOST=.*/      - DEFAULT_HOST=$domain/g" docker-compose.letsencrypt.yml
 
     if [[ $email ]]; then
-        sed -i -e "s/      - LETSENCRYPT_EMAIL=myemailaddress@mail.com/      - LETSENCRYPT_EMAIL=$email/g" docker-compose.generated.yml
+        sed -i -e "s/      - LETSENCRYPT_EMAIL=.*/      - LETSENCRYPT_EMAIL=$email/g" docker-compose.letsencrypt.yml
     fi
 
     if [[ $quiet = 'false' ]]; then
-        docker-compose -f docker-compose.generated.yml up -d
+        docker-compose -f docker-compose.letsencrypt.yml up -d
     else
-        docker-compose -f docker-compose.generated.yml up -d &> /dev/null
+        docker-compose -f docker-compose.letsencrypt.yml up -d &> /dev/null
     fi
+
 else
 
     if [[ $tag ]]; then
-        sed -i -e "s/    image: nanocurrency\/nano-beta:latest/    image: nanocurrency\/nano-beta:$tag/g" docker-compose.yml
+        sed -i -e "s/    image: nanocurrency\/nano-beta:.*/    image: nanocurrency\/nano-beta:$tag/g" docker-compose.yml
     fi
 
     if [[ $quiet = 'false' ]]; then
@@ -95,6 +97,7 @@ else
     else
         docker-compose up -d &> /dev/null
     fi
+
 fi
 
 if [ $? -ne 0 ]; then
