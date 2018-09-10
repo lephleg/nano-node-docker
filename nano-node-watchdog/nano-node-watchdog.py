@@ -102,7 +102,7 @@ def restartNodeContainer(logFile):
 
     # restart node container
     client = docker.from_env()
-    node = client.containers.get('nano-node')
+    node = client.containers.get('nano-beta-node')
     node.restart()
 
     log("Node container restarted successfully. Will check on it again in a minute...", logFile)
