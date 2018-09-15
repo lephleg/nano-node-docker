@@ -68,7 +68,8 @@ Optionally, if a domain name is available for your host, NANO Node Docker can al
 Download or clone the latest release, open a bash terminal and fire up the installation script:
 
 ```
-$ sudo ./setup.sh
+$ cd ~ && git clone https://github.com/lephleg/nano-node-docker.git && cd ~/nano-node-docker
+$ sudo ./setup.sh -s
 ```
 
 **That's it!** You can now navigate to your host IP to check your Nano Node Monitor dashboard. **Do not forget to write down** your wallet seed as it appears in the output of the installer.
