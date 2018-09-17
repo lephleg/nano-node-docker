@@ -14,7 +14,7 @@
     </tr>
     	<tr>
         <td>
-        For hosting a testnet NANO node in the BETA network, please checkout the "<a href="https://github.com/lephleg/nano-node-docker/tree/beta">beta</a>" branch.
+        For hosting a NANO node in the <a href="https://beta.nano.org/" target="_blank">BETA network</a>, checkout the "<a href="https://github.com/lephleg/nano-node-docker/tree/beta"><b>beta</b></a>" branch.
         </td>
     </tr>
 </table>
