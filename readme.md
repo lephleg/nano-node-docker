@@ -14,7 +14,7 @@
     </tr>
     	<tr>
         <td>
-        For hosting a testnet NANO node in the BETA network, please checkout the "<a href="https://github.com/lephleg/nano-node-docker/tree/beta">beta</a>" branch.
+        For hosting a NANO node in the <a href="https://beta.nano.org/" target="_blank">BETA network</a>, checkout the "<a href="https://github.com/lephleg/nano-node-docker/tree/beta"><b>beta</b></a>" branch.
         </td>
     </tr>
 </table>
@@ -68,7 +68,7 @@ Optionally, if a domain name is available for your host, NANO Node Docker can al
 Download or clone the latest release, open a bash terminal and fire up the installation script:
 
 ```
-$ cd ~ && git clone https://github.com/lephleg/nano-node-docker.git && cd ~/nano-node-docker
+$ cd ~ && git clone https://github.com/lephleg/nano-node-docker.git && cd ~/nano-node-docker && git checkout beta
 $ sudo ./setup.sh -s
 ```
 
@@ -93,12 +93,6 @@ The following flags are available when running the stack installer:
         <td><b>-e</b></td>
         <td>your email address</td>
         <td>Sets your email for Let's Encrypt certificate notifications. Optional for SSL-enabled setups.</td>
-    </tr>
-    <tr>
-        <td><b>-f</b></td>
-        <td>-</td>
-        <td>Enables fast-syncing by fetching the latest ledger and placing it into <i>/root/Raiblocks/</i> inside <b>nano-node</b>
-            container.</td>
     </tr>
     <tr>
         <td><b>-q</b></td>
@@ -132,40 +126,23 @@ The email (-e) argument is optional and would used by Let's Encrypt to warn you 
 
 **Done!** Navigate to your domain name to check your Nano Node Monitor Dashboard over HTTPS!
 
-### Install with fast-syncing
-
-NANO Node Docker stack can also bootstrap any newly created node (or an existing one) with the latest ledger files. This implies that you are willing to trust third-party sources for your node history. The latest ledger files are obtained from the NANO Node Ninja link [here](https://nanonode.ninja/api/ledger/download).
-
-Just add the `-f` flag to your installer command:
-
-```
-$ sudo ./setup.sh -f
-```
-**WARNING: You are strongly adviced to BACKUP your wallet seed before trying to fast-sync an existing node.**
-
 ### **Install with a different NANO node image**
 
-In some cases (like in the BETA network) you may want to use a different Docker image tag for your node, other than the default "latest":
+In some cases (like now in the BETA network) you may want to use a different Docker image tag for your node, other than the default "latest":
 
 ```
 $ sudo ./setup.sh -t V16.0RC2
 ```
-
-**Note:** For the mainnet, you are **strongly advised** to stick with the "latest" image tag. Do otherwise, only if instructed by the NANO core team. 
 
 ### **Combining installer flags**
 
 All the installer flags can be chained, so you can easily combine them like this:
 
 ```
-$ sudo ./setup.sh -sfd mydomain.com -e myemail@example.com
+$ sudo ./setup.sh -sd mydomain.com -e myemail@example.com -t V16.0RC2
 ```
 
-(_display seed, apply fast-sync and use Let's Encrypt with your email supplied_)
-
-<div align="center">
-    <img src="screenshot.png" alt="Screenshot" width='680px' height='auto'/>
-</div>
+(_display seed, use image V16.0RC2 and use Let's Encrypt with your email supplied_)
 
 ## Self-configurable Installation
 
