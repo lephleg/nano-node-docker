@@ -11,7 +11,7 @@ services:
     ports:
       - "7075:7075/udp"
       - "7075:7075"
-      - "127.0.0.1:7076:7076"
+      - "::1:7076:7076"
     volumes:
       - ./nano-node:/root/RaiBlocks
 
