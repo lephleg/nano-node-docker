@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# VERSION
+version='v3.8'
+
 # OUTPUT VARS
 red=`tput setaf 1`
 green=`tput setaf 2`
@@ -27,6 +30,8 @@ while getopts 'sqfd:e:t:' flag; do
 done
 
 echo $@ > settings
+
+echo "${bold}NANO Node Docker ${version}${reset}"
 
 # VERIFY TOOLS INSTALLATIONS
 docker -v &> /dev/null
