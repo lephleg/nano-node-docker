@@ -154,7 +154,7 @@ done
 
 # DETERMINE NODE VERSION
 nodeExec="docker exec -it nano-node /usr/bin/rai_node"
-eval $nodeExec &> /dev/null
+eval "$nodeExec --version" &> /dev/null
 
 # if rai_node doesn't exist, version is v18+
 if [ $? -ne 0 ]; then
