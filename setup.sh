@@ -33,18 +33,6 @@ echo $@ > settings
 
 echo "${bold}NANO Node Docker ${version}${reset}"
 
-# SET BASH ALIASES FOR NODE CLI
-if [ -f ~/.bash_aliases ]; then
-    alias=$(cat ~/.bash_aliases | grep 'rai');
-    if [[ ! $alias ]]; then
-        echo "alias rai='docker exec -it nano-node /usr/bin/rai_node'" >> ~/.bash_aliases;
-        source ~/.bashrc;
-    fi
-else
-    echo "alias rai='docker exec -it nano-node /usr/bin/rai_node'" >> ~/.bash_aliases;
-    source ~/.bashrc;
-fi
-
 # VERIFY TOOLS INSTALLATIONS
 docker -v &> /dev/null
 if [ $? -ne 0 ]; then
@@ -91,6 +79,21 @@ if [[ $fastSync = 'true' ]]; then
         rm todaysledger.7z
     fi
 
+fi
+
+# DETERMINE IF THIS IS AN INITIAL INSTALL
+[[ $quiet = 'false' ]] && printf "${yellow}Checking initial status...${reset}"
+
+# check if node mounted directory exists
+if [ -d "./nano-node" ]; then
+    # check if mounted directory follows the new /root structure
+    if [ ! -d "./nano-node/RaiBlocks" ]; then
+        [[ $quiet = 'false' ]] && printf "${yellow}'./nano-node/RaiBlocks' directory doesn't exist. Migrating files... "
+        mkdir ./nano-node/RaiBlocks
+        # move everything into subdirectory and suppress the error about itself
+        mv ./nano-node/* ./nano-node/RaiBlocks/ &> /dev/null
+        [[ $quiet = 'false' ]] && printf "${green}done.\n"
+    fi
 fi
 
 # SPIN UP THE APPROPRIATE STACK
@@ -149,26 +152,49 @@ done
 
 [[ $quiet = 'false' ]] && printf "${green}done.${reset}\n"
 
+# DETERMINE NODE VERSION
+nodeExec="docker exec -it nano-node /usr/bin/rai_node"
+eval $nodeExec &> /dev/null
+
+# if rai_node doesn't exist, version is v18+
+if [ $? -ne 0 ]; then
+    [[ $quiet = 'false' ]] && printf "${yellow}Nano v18.0 or newer detected.\n"
+    nodeExec="docker exec -it nano-node /usr/bin/nano_node"
+else
+    [[ $quiet = 'false' ]] && printf "${yellow}A Nano node version earlier than v18 has been detected.\n"
+fi
+
+# SET BASH ALIASES FOR NODE CLI
+if [ -f ~/.bash_aliases ]; then
+    alias=$(cat ~/.bash_aliases | grep 'nano');
+    if [[ ! $alias ]]; then
+        echo "alias nano='${nodeExec}'" >> ~/.bash_aliases;
+        source ~/.bashrc;
+    fi
+else
+    echo "alias nano='${nodeExec}'" >> ~/.bash_aliases;
+    source ~/.bashrc;
+fi
+
 # WALLET SETUP
-existedWallet="$(docker exec -it nano-node /usr/bin/rai_node --wallet_list | grep 'Wallet ID' | awk '{ print $NF}')"
+existedWallet="$(${nodeExec} --wallet_list | grep 'Wallet ID' | awk '{ print $NF}')"
 
 if [[ ! $existedWallet ]]; then
     [[ $quiet = 'false' ]] && printf "${yellow}No wallet found. Generating a new one... ${reset}"
 
-    walletId=$(docker exec -it nano-node /usr/bin/rai_node --wallet_create | tr -d '\r')
-    address=$(docker exec -it nano-node /usr/bin/rai_node --account_create --wallet=$walletId | awk '{ print $NF}')
+    walletId=$(${nodeExec} --wallet_create | tr -d '\r')
+    address="$(${nodeExec} --account_create --wallet=$walletId | awk '{ print $NF}')"
     
     [[ $quiet = 'false' ]] && printf "${green}done.${reset}\n"
 else
     [[ $quiet = 'false' ]] && echo "${yellow}Existing wallet found.${reset}"
 
-    address="$(docker exec -it nano-node /usr/bin/rai_node --wallet_list | grep 'xrb_' | awk '{ print $NF}' | tr -d '\r')"
+    address="$(${nodeExec} --wallet_list | grep 'xrb_' | awk '{ print $NF}' | tr -d '\r')"
     walletId=$(echo $existedWallet | tr -d '\r')
-
 fi
 
 if [[ $quiet = 'false' && $displaySeed = 'true' ]]; then
-    seed=$(docker exec -it nano-node /usr/bin/rai_node --wallet_decrypt_unsafe --wallet=$walletId | grep 'Seed' | awk '{ print $NF}')
+    seed=$(${nodeExec} --wallet_decrypt_unsafe --wallet=$walletId | grep 'Seed' | awk '{ print $NF}')
 fi
 
 if [[ $quiet = 'false' ]]; then
