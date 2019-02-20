@@ -31,7 +31,11 @@ done
 
 echo $@ > settings
 
-echo "${bold}NANO Node Docker ${version}${reset}"
+# PRINT INSTALLER DETAILS
+[[ $quiet = 'false' ]] && echo "${green} ----------------------${reset}"
+[[ $quiet = 'false' ]] && echo "${green}${bold} NANO Node Docker ${version}${reset}"
+[[ $quiet = 'false' ]] && echo "${green} ----------------------${reset}"
+[[ $quiet = 'false' ]] && echo ""
 
 # VERIFY TOOLS INSTALLATIONS
 docker -v &> /dev/null
@@ -64,25 +68,27 @@ fi
 if [[ $fastSync = 'true' ]]; then
 
     if [[ $quiet = 'false' ]]; then
-        printf "${yellow}Downloading latest ledger files for fast-syncing...${reset}\n"
+        printf "=> ${yellow}Downloading latest ledger files for fast-syncing...${reset}\n"
         wget -O todaysledger.7z https://nanonode.ninja/api/ledger/download -q --show-progress
 
-        printf "${yellow}Unzipping and placing the files (takes a while)...${reset} "
-        7z x todaysledger.7z  -o./nano-node -y &> /dev/null
+        printf "=> ${yellow}Unzipping and placing the files (takes a while)...${reset} "
+        7z x todaysledger.7z  -o./nano-node/RaiBlocks -y &> /dev/null
         rm todaysledger.7z
         printf "${green}done.${reset}\n"
+        echo ""
 
     else
         wget -O todaysledger.7z https://nanonode.ninja/api/ledger/download -q 
         docker-compose stop nano-node &> /dev/null
-        7z x todaysledger.7z  -o./nano-node -y &> /dev/null
+        7z x todaysledger.7z  -o./nano-node/RaiBlocks -y &> /dev/null
         rm todaysledger.7z
     fi
 
 fi
 
 # DETERMINE IF THIS IS AN INITIAL INSTALL
-[[ $quiet = 'false' ]] && printf "${yellow}Checking initial status...${reset}"
+[[ $quiet = 'false' ]] && echo "=> ${yellow}Checking initial status...${reset}"
+[[ $quiet = 'false' ]] && echo ""
 
 # check if node mounted directory exists
 if [ -d "./nano-node" ]; then
@@ -97,7 +103,8 @@ if [ -d "./nano-node" ]; then
 fi
 
 # SPIN UP THE APPROPRIATE STACK
-[[ $quiet = 'false' ]] && echo "${yellow}Pulling images and spinning up containers...${reset}"
+[[ $quiet = 'false' ]] && echo "=> ${yellow}Pulling images and spinning up containers...${reset}"
+[[ $quiet = 'false' ]] && echo ""
 
 docker network create nano-node-network &> /dev/null
 
@@ -141,7 +148,8 @@ if [ $? -ne 0 ]; then
 fi
 
 # CHECK NODE INITIALIZATION
-[[ $quiet = 'false' ]] && printf "${yellow}Waiting for NANO node to fully initialize... "
+[[ $quiet = 'false' ]] && echo ""
+[[ $quiet = 'false' ]] && printf "=> ${yellow}Waiting for NANO node to fully initialize... "
 
 isRpcLive="$(curl -s -d '{"action": "version"}' 127.0.0.1:7076 | grep "rpc_version")"
 while [ ! -n "$isRpcLive" ];
@@ -150,7 +158,7 @@ do
     isRpcLive="$(curl -s -d '{"action": "version"}' 127.0.0.1:7076 | grep "rpc_version")"
 done
 
-[[ $quiet = 'false' ]] && printf "${green}done.${reset}\n"
+[[ $quiet = 'false' ]] && printf "${green}done.${reset}\n\n"
 
 # DETERMINE NODE VERSION
 nodeExec="docker exec -it nano-node /usr/bin/rai_node"
@@ -158,11 +166,12 @@ eval "$nodeExec --version" &> /dev/null
 
 # if rai_node doesn't exist, version is v18+
 if [ $? -ne 0 ]; then
-    [[ $quiet = 'false' ]] && printf "${yellow}Nano v18.0 or newer detected.\n"
+    [[ $quiet = 'false' ]] && printf "${reset}Nano v18.0 or newer detected.\n"
     nodeExec="docker exec -it nano-node /usr/bin/nano_node"
 else
-    [[ $quiet = 'false' ]] && printf "${yellow}A Nano node version earlier than v18 has been detected.\n"
+    [[ $quiet = 'false' ]] && printf "${reset}A Nano node version earlier than v18 has been detected.\n"
 fi
+[[ $quiet = 'false' ]] && echo ''
 
 # SET BASH ALIASES FOR NODE CLI
 if [ -f ~/.bash_aliases ]; then
@@ -180,14 +189,15 @@ fi
 existedWallet="$(${nodeExec} --wallet_list | grep 'Wallet ID' | awk '{ print $NF}')"
 
 if [[ ! $existedWallet ]]; then
-    [[ $quiet = 'false' ]] && printf "${yellow}No wallet found. Generating a new one... ${reset}"
+    [[ $quiet = 'false' ]] && printf "=> ${yellow}No wallet found. Generating a new one... ${reset}"
 
     walletId=$(${nodeExec} --wallet_create | tr -d '\r')
     address="$(${nodeExec} --account_create --wallet=$walletId | awk '{ print $NF}')"
     
-    [[ $quiet = 'false' ]] && printf "${green}done.${reset}\n"
+    [[ $quiet = 'false' ]] && printf "${green}done.${reset}\n\n"
 else
-    [[ $quiet = 'false' ]] && echo "${yellow}Existing wallet found.${reset}"
+    [[ $quiet = 'false' ]] && echo "=> ${yellow}Existing wallet found.${reset}"
+    [[ $quiet = 'false' ]] && echo ''
 
     address="$(${nodeExec} --wallet_list | grep 'xrb_' | awk '{ print $NF}' | tr -d '\r')"
     walletId=$(echo $existedWallet | tr -d '\r')
@@ -197,18 +207,9 @@ if [[ $quiet = 'false' && $displaySeed = 'true' ]]; then
     seed=$(${nodeExec} --wallet_decrypt_unsafe --wallet=$walletId | grep 'Seed' | awk '{ print $NF}')
 fi
 
-if [[ $quiet = 'false' ]]; then
-    echo "${yellow} -------------------------------------------------------------------------------------- ${reset}"
-    echo "${yellow} Node account address: ${green}$address${yellow} "
-    if [[ $displaySeed = 'true' ]]; then
-        echo "${yellow} Node wallet seed: ${red}${bold}$seed${reset}${yellow} "
-    fi
-    echo "${yellow} -------------------------------------------------------------------------------------- ${reset}"
-fi
-
 # UPDATE MONITOR CONFIGS
 if [ ! -f ./nano-node-monitor/config.php ]; then
-    [[ $quiet = 'false' ]] && echo "${yellow}No existing NANO Node Monitor config file found. Fetching a fresh copy...${reset}"
+    [[ $quiet = 'false' ]] && echo "=> ${yellow}No existing NANO Node Monitor config file found. Fetching a fresh copy...${reset}"
     if [[ $quiet = 'false' ]]; then
         docker-compose restart nano-node-monitor
     else
@@ -216,7 +217,7 @@ if [ ! -f ./nano-node-monitor/config.php ]; then
     fi
 fi
 
-[[ $quiet = 'false' ]] && printf "${yellow}Configuring NANO Node Monitor... ${reset}"
+[[ $quiet = 'false' ]] && printf "=> ${yellow}Configuring NANO Node Monitor... ${reset}"
 
 sed -i -e "s/\/\/ \$nanoNodeRPCIP.*;/\$nanoNodeRPCIP/g" ./nano-node-monitor/config.php
 sed -i -e "s/\$nanoNodeRPCIP.*/\$nanoNodeRPCIP = 'nano-node';/g" ./nano-node-monitor/config.php
@@ -243,16 +244,27 @@ sed -i -e "s/\/\/ \$blockExplorer.*;/\$blockExplorer = 'meltingice';/g" ./nano-n
 # remove any carriage returns may have been included by sed replacements
 sed -i -e 's/\r//g' ./nano-node-monitor/config.php
 
-[[ $quiet = 'false' ]] && printf "${green}done.${reset}\n"
+[[ $quiet = 'false' ]] && printf "${green}done.${reset}\n\n"
 
 if [[ $quiet = 'false' ]]; then
-    echo "${yellow} ---------------------------------------------------------------------"
-    echo "${green} ${bold}Congratulations! NANO Node Docker stack has been setup successfully!${reset}"
-    echo "${yellow} --------------------------------------------------------------------- ${reset}"
-    if [[ $domain ]]; then
-        echo "${yellow}Open a browser and navigate to ${green}https://$domain${yellow} to check your monitor."
-    else
-        echo "${yellow}Open a browser and navigate to ${green}http://$ipAddress${yellow} to check your monitor."
+    echo "${yellow} |======================================================================================| ${reset}"
+    echo "${green} ${bold}|Congratulations! NANO Node Docker stack has been setup successfully!                  |${reset}"
+    echo "${yellow} |======================================================================================| ${reset}"
+    echo "${yellow} |Node account address: ${green}$address${yellow}|"
+    if [[ $displaySeed = 'true' ]]; then
+        echo "${yellow} |Node wallet seed: ${red}${bold}$seed${reset}${yellow}    |"
     fi
-    echo "${yellow}You can further configure and personalize your monitor by editing the config file located in ${green}nano-node-monitor/config.php${yellow}.${reset}"
+    echo "${yellow} |======================================================================================| ${reset}"
+
+    echo ""
+
+    if [[ $domain ]]; then
+        echo "${yellow} Open a browser and navigate to ${green}https://$domain${yellow} to check your monitor."
+    else
+        echo "${yellow} Open a browser and navigate to ${green}http://$ipAddress${yellow} to check your monitor."
+    fi
+    echo "${yellow} You can further configure and personalize your monitor by editing the config file located in ${green}nano-node-monitor/config.php${yellow}.${reset}"
+
+    echo ""
+
 fi
