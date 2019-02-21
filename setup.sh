@@ -32,9 +32,9 @@ done
 echo $@ > settings
 
 # PRINT INSTALLER DETAILS
-[[ $quiet = 'false' ]] && echo "${green} ----------------------${reset}"
+[[ $quiet = 'false' ]] && echo "${green} ------------------------------------${reset}"
 [[ $quiet = 'false' ]] && echo "${green}${bold} NANO Node Docker ${version}${reset}"
-[[ $quiet = 'false' ]] && echo "${green} ----------------------${reset}"
+[[ $quiet = 'false' ]] && echo "${green} ------------------------------------${reset}"
 [[ $quiet = 'false' ]] && echo ""
 
 # VERIFY TOOLS INSTALLATIONS
@@ -136,8 +136,6 @@ fi
 # CHECK NODE INITIALIZATION
 [[ $quiet = 'false' ]] && echo ""
 [[ $quiet = 'false' ]] && printf "=> ${yellow}Waiting for NANO node to fully initialize... "
-
-[[ $quiet = 'false' ]] && printf "${yellow}Waiting for NANO node to fully initialize... "
 
 isRpcLive="$(curl -s -d '{"action": "version"}' [::1]:55000 | grep "rpc_version")"
 while [ ! -n "$isRpcLive" ];
