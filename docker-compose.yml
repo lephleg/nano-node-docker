@@ -11,9 +11,9 @@ services:
     ports:
       - "54000:54000/udp"
       - "54000:54000"
-      - "127.0.0.1:55000:55000"
+      - "::1:55000:55000"
     volumes:
-      - ./nano-beta-node:/root/RaiBlocksBeta
+      - ./nano-beta-node:/root
 
   nano-node-monitor:
     image: nanotools/nanonodemonitor
