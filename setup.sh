@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # VERSION
-version='v3.8'
+version='v4.0'
 
 # OUTPUT VARS
 red=`tput setaf 1`
