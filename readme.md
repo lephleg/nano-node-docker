@@ -97,8 +97,12 @@ The following flags are available when running the stack installer:
     <tr>
         <td><b>-f</b></td>
         <td>-</td>
-        <td>Enables fast-syncing by fetching the latest ledger and placing it into <i>/root/Raiblocks/</i> inside <b>nano-node</b>
-            container.</td>
+        <td>Enables fast-syncing by fetching the latest ledger and placing it into <i>/root/Raiblocks/</i> inside <b>nano-node</b> container.</td>
+    </tr>
+    <tr>
+        <td><b>-i</b></td>
+        <td>your existing wallet seed</td>
+        <td>Imports the passed wallet seed automatically. You can leave this argument blank for security concerns and the installer will guide you to manually import your seed.</td>
     </tr>
     <tr>
         <td><b>-q</b></td>
@@ -148,16 +152,17 @@ The email (-e) argument is optional and would used by Let's Encrypt to warn you 
 
 **Done!** Navigate to your domain name to check your Nano Node Monitor Dashboard over HTTPS!
 
-### Install with fast-syncing
+### **Import existing wallet seed**
 
-NANO Node Docker stack can also bootstrap any newly created node (or an existing one) with the latest ledger files. This implies that you are willing to trust third-party sources for your node history. The latest ledger files are obtained from the NANO Node Ninja link [here](https://nanonode.ninja/api/ledger/download).
-
-Just add the `-f` flag to your installer command:
+There are cases you already have a wallet seed you'd like to use in your node. You can use the import flag (`-i`) to pass a NANO wallet seed and let the installer import it for you.
 
 ```
-$ sudo ./setup.sh -f
+$ sudo ./setup.sh -i 51724DB3B4AE224950CA35D7D9365BD4DE69BB53C57BFC4D2E65807C5F18EDC0
 ```
-**WARNING: You are strongly adviced to BACKUP your wallet seed before trying to fast-sync an existing node.**
+
+**Warning:** Supplying an import seed with OVERWRITE any existing ones in any NANO nodes already set up by NANO Node Docker!
+
+**Note:** It's understandable if for security reason you'd like to avoid passing your seed to a third-party tool. In that case, you can leave the argument empty and installer will supply you with the appropriate NANO node CLI commands to import your seed manually.
 
 ### **Install with a different NANO node image**
 
