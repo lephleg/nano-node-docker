@@ -167,16 +167,10 @@ done
 nodeExec="docker exec -it nano-node /usr/bin/rai_node"
 eval "$nodeExec --version" &> /dev/null
 
-# if rai_node doesn't exist, version is v18+
+# if rai_node doesn't exist, use nano_node
 if [ $? -ne 0 ]; then
-    [[ $quiet = 'false' ]] && printf "${reset}Nano v18.0 or newer detected.\n"
     nodeExec="docker exec -it nano-node /usr/bin/nano_node"
-    # let nano node perform the move
-    sleep 10s
-else
-    [[ $quiet = 'false' ]] && printf "${reset}A Nano node version earlier than v18 has been detected.\n"
 fi
-[[ $quiet = 'false' ]] && echo ''
 
 # SET BASH ALIASES FOR NODE CLI
 if [ -f ~/.bash_aliases ]; then
