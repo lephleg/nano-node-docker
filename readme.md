@@ -118,6 +118,22 @@ The following flags are available when running the stack installer:
     </tr>
 </table>
 
+### NANO Node CLI bash alias
+
+NANO node runs inside the nano-node container. In order to execute commands from its [Command Line Interface](https://github.com/nanocurrency/raiblocks/wiki/Command-line-interface) you'll have to enter the container or execute them by using the following Docker command:
+
+```
+$ docker exec -it nano-node rai_node <command>
+```
+
+For convinience the following shorthand alias is set by the installer:
+
+```
+$ rai <command>
+```
+
+Both of the above formats are interchangeable.
+
 ## Examples
 
 ### **Install with SSL enabled**
