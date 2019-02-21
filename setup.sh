@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# VERSION
+version='v4.0 - BETA Network'
+
 # OUTPUT VARS
 red=`tput setaf 1`
 green=`tput setaf 2`
@@ -27,6 +30,12 @@ while getopts 'sqfd:e:t:' flag; do
 done
 
 echo $@ > settings
+
+# PRINT INSTALLER DETAILS
+[[ $quiet = 'false' ]] && echo "${green} ------------------------------------${reset}"
+[[ $quiet = 'false' ]] && echo "${green}${bold} NANO Node Docker ${version}${reset}"
+[[ $quiet = 'false' ]] && echo "${green} ------------------------------------${reset}"
+[[ $quiet = 'false' ]] && echo ""
 
 # VERIFY TOOLS INSTALLATIONS
 docker -v &> /dev/null
@@ -61,8 +70,27 @@ if [[ $fastSync = 'true' ]]; then
     exit 2
 fi
 
+# DETERMINE IF THIS IS AN INITIAL INSTALL
+[[ $quiet = 'false' ]] && echo "=> ${yellow}Checking initial status...${reset}"
+[[ $quiet = 'false' ]] && echo ""
+
+if [ -d "./nano-beta-node" ]; then
+    # check if mounted directory follows the new /root structure
+    if [ ! -d "./nano-beta-node/RaiBlocksBeta" ]; then
+        if [ ! -d "./nano-beta-node/NanoBeta" ]; then
+            [[ $quiet = 'false' ]] && printf "${reset}Unsupported directory structure detected. Migrating files... "
+            mkdir ./nano-beta-node/RaiBlocksBeta
+            # move everything into subdirectory and suppress the error about itself
+            mv ./nano-beta-node/* ./nano-beta-node/RaiBlocksBeta/ &> /dev/null
+            [[ $quiet = 'false' ]] && printf "${green}done.\n${reset}"
+            [[ $quiet = 'false' ]] && echo ""
+        fi
+    fi
+fi
+
 # SPIN UP THE APPROPRIATE STACK
-[[ $quiet = 'false' ]] && echo "${yellow}Pulling images and spinning up containers...${reset}"
+[[ $quiet = 'false' ]] && echo "=> ${yellow}Pulling images and spinning up containers...${reset}"
+[[ $quiet = 'false' ]] && echo ""
 
 docker network create nano-beta-node-network &> /dev/null
 
@@ -106,51 +134,64 @@ if [ $? -ne 0 ]; then
 fi
 
 # CHECK NODE INITIALIZATION
-[[ $quiet = 'false' ]] && printf "${yellow}Waiting for NANO node to fully initialize... "
+[[ $quiet = 'false' ]] && echo ""
+[[ $quiet = 'false' ]] && printf "=> ${yellow}Waiting for NANO node to fully initialize... "
 
-isRpcLive="$(curl -s -d '{"action": "version"}' 127.0.0.1:55000 | grep "rpc_version")"
+isRpcLive="$(curl -s -d '{"action": "version"}' [::1]:55000 | grep "rpc_version")"
 while [ ! -n "$isRpcLive" ];
 do
     sleep 1s
-    isRpcLive="$(curl -s -d '{"action": "version"}' 127.0.0.1:55000 | grep "rpc_version")"
+    isRpcLive="$(curl -s -d '{"action": "version"}' [::1]:55000 | grep "rpc_version")"
 done
 
-[[ $quiet = 'false' ]] && printf "${green}done.${reset}\n"
+[[ $quiet = 'false' ]] && printf "${green}done.${reset}\n\n"
+
+# DETERMINE NODE VERSION
+nodeExec="docker exec -it nano-beta-node /usr/bin/rai_node"
+eval "$nodeExec --version" &> /dev/null
+
+# if rai_node doesn't exist, use nano_node
+if [ $? -ne 0 ]; then
+    nodeExec="docker exec -it nano-beta-node /usr/bin/nano_node"
+fi
+
+# SET BASH ALIASES FOR NODE CLI
+if [ -f ~/.bash_aliases ]; then
+    alias=$(cat ~/.bash_aliases | grep 'nano');
+    if [[ ! $alias ]]; then
+        echo "alias nano='${nodeExec}'" >> ~/.bash_aliases;
+        source ~/.bashrc;
+    fi
+else
+    echo "alias nano='${nodeExec}'" >> ~/.bash_aliases;
+    source ~/.bashrc;
+fi
 
 # WALLET SETUP
-existedWallet="$(docker exec -it nano-beta-node /usr/bin/rai_node --wallet_list | grep 'Wallet ID' | awk '{ print $NF}')"
+existedWallet="$(${nodeExec} --wallet_list | grep 'Wallet ID' | awk '{ print $NF}')"
 
 if [[ ! $existedWallet ]]; then
-    [[ $quiet = 'false' ]] && printf "${yellow}No wallet found. Generating a new one... ${reset}"
+    [[ $quiet = 'false' ]] && printf "=> ${yellow}No wallet found. Generating a new one... ${reset}"
 
-    walletId=$(docker exec -it nano-beta-node /usr/bin/rai_node --wallet_create | tr -d '\r')
-    address=$(docker exec -it nano-beta-node /usr/bin/rai_node --account_create --wallet=$walletId | awk '{ print $NF}')
+    walletId=$(${nodeExec} --wallet_create | tr -d '\r')
+    address="$(${nodeExec} --account_create --wallet=$walletId | awk '{ print $NF}')"
     
-    [[ $quiet = 'false' ]] && printf "${green}done.${reset}\n"
+    [[ $quiet = 'false' ]] && printf "${green}done.${reset}\n\n"
 else
-    [[ $quiet = 'false' ]] && echo "${yellow}Existing wallet found.${reset}"
+    [[ $quiet = 'false' ]] && echo "=> ${yellow}Existing wallet found.${reset}"
+    [[ $quiet = 'false' ]] && echo ''
 
-    address="$(docker exec -it nano-beta-node /usr/bin/rai_node --wallet_list | grep 'xrb_' | awk '{ print $NF}' | tr -d '\r')"
+    address="$(${nodeExec} --wallet_list | grep 'xrb_' | awk '{ print $NF}' | tr -d '\r')"
     walletId=$(echo $existedWallet | tr -d '\r')
-
 fi
 
 if [[ $quiet = 'false' && $displaySeed = 'true' ]]; then
-    seed=$(docker exec -it nano-beta-node /usr/bin/rai_node --wallet_decrypt_unsafe --wallet=$walletId | grep 'Seed' | awk '{ print $NF}')
-fi
-
-if [[ $quiet = 'false' ]]; then
-    echo "${yellow} -------------------------------------------------------------------------------------- ${reset}"
-    echo "${yellow} Node account address: ${green}$address${yellow} "
-    if [[ $displaySeed = 'true' ]]; then
-        echo "${yellow} Node wallet seed: ${red}${bold}$seed${reset}${yellow} "
-    fi
-    echo "${yellow} -------------------------------------------------------------------------------------- ${reset}"
+    seed=$(${nodeExec} --wallet_decrypt_unsafe --wallet=$walletId | grep 'Seed' | awk '{ print $NF}')
 fi
 
 # UPDATE MONITOR CONFIGS
 if [ ! -f ./nano-node-monitor/config.php ]; then
-    [[ $quiet = 'false' ]] && echo "${yellow}No existing NANO Node Monitor config file found. Fetching a fresh copy...${reset}"
+    [[ $quiet = 'false' ]] && echo "=> ${yellow}No existing NANO Node Monitor config file found. Fetching a fresh copy...${reset}"
     if [[ $quiet = 'false' ]]; then
         docker-compose restart nano-node-monitor
     else
@@ -158,7 +199,7 @@ if [ ! -f ./nano-node-monitor/config.php ]; then
     fi
 fi
 
-[[ $quiet = 'false' ]] && printf "${yellow}Configuring NANO Node Monitor... ${reset}"
+[[ $quiet = 'false' ]] && printf "=> ${yellow}Configuring NANO Node Monitor... ${reset}"
 
 sed -i -e "s/\/\/ \$currency.*;/\$currency/g" ./nano-node-monitor/config.php
 sed -i -e "s/\$currency.*/\$currency = 'nano-beta';/g" ./nano-node-monitor/config.php
@@ -191,16 +232,27 @@ sed -i -e "s/\/\/ \$blockExplorer.*;/\$blockExplorer = 'meltingice-beta';/g" ./n
 # remove any carriage returns may have been included by sed replacements
 sed -i -e 's/\r//g' ./nano-node-monitor/config.php
 
-[[ $quiet = 'false' ]] && printf "${green}done.${reset}\n"
+[[ $quiet = 'false' ]] && printf "${green}done.${reset}\n\n"
 
 if [[ $quiet = 'false' ]]; then
-    echo "${yellow} ---------------------------------------------------------------------"
-    echo "${green} ${bold}Congratulations! NANO Node Docker stack has been setup successfully!${reset}"
-    echo "${yellow} --------------------------------------------------------------------- ${reset}"
-    if [[ $domain ]]; then
-        echo "${yellow}Open a browser and navigate to ${green}https://$domain${yellow} to check your monitor."
-    else
-        echo "${yellow}Open a browser and navigate to ${green}http://$ipAddress${yellow} to check your monitor."
+    echo "${yellow} |======================================================================================| ${reset}"
+    echo "${green} ${bold}|Congratulations! NANO Node Docker stack has been setup successfully!                  |${reset}"
+    echo "${yellow} |======================================================================================| ${reset}"
+    echo "${yellow} |Node account address: ${green}$address${yellow}|"
+    if [[ $displaySeed = 'true' ]]; then
+        echo "${yellow} |Node wallet seed: ${red}${bold}$seed${reset}${yellow}    |"
     fi
-    echo "${yellow}You can further configure and personalize your monitor by editing the config file located in ${green}nano-node-monitor/config.php${yellow}.${reset}"
+    echo "${yellow} |======================================================================================| ${reset}"
+
+    echo ""
+
+    if [[ $domain ]]; then
+        echo "${yellow} Open a browser and navigate to ${green}https://$domain${yellow} to check your monitor."
+    else
+        echo "${yellow} Open a browser and navigate to ${green}http://$ipAddress${yellow} to check your monitor."
+    fi
+    echo "${yellow} You can further configure and personalize your monitor by editing the config file located in ${green}nano-node-monitor/config.php${yellow}.${reset}"
+
+    echo ""
+
 fi
