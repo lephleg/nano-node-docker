@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # VERSION
-version='v3.8 - BETA Network'
+version='v4.0 - BETA Network'
 
 # OUTPUT VARS
 red=`tput setaf 1`
