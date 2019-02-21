@@ -94,12 +94,14 @@ fi
 if [ -d "./nano-node" ]; then
     # check if mounted directory follows the new /root structure
     if [ ! -d "./nano-node/RaiBlocks" ]; then
-        [[ $quiet = 'false' ]] && printf "${reset}'./nano-node/RaiBlocks' directory doesn't exist. Migrating files... "
-        mkdir ./nano-node/RaiBlocks
-        # move everything into subdirectory and suppress the error about itself
-        mv ./nano-node/* ./nano-node/RaiBlocks/ &> /dev/null
-        [[ $quiet = 'false' ]] && printf "${green}done.\n${reset}"
-        [[ $quiet = 'false' ]] && echo ""
+        if [ ! -d "./nano-node/Nano" ]; then
+            [[ $quiet = 'false' ]] && printf "${reset}'./nano-node/RaiBlocks' directory doesn't exist. Migrating files... "
+            mkdir ./nano-node/RaiBlocks
+            # move everything into subdirectory and suppress the error about itself
+            mv ./nano-node/* ./nano-node/RaiBlocks/ &> /dev/null
+            [[ $quiet = 'false' ]] && printf "${green}done.\n${reset}"
+            [[ $quiet = 'false' ]] && echo ""
+        fi
     fi
 fi
 
@@ -169,6 +171,8 @@ eval "$nodeExec --version" &> /dev/null
 if [ $? -ne 0 ]; then
     [[ $quiet = 'false' ]] && printf "${reset}Nano v18.0 or newer detected.\n"
     nodeExec="docker exec -it nano-node /usr/bin/nano_node"
+    # let nano node perform the move
+    sleep 10s
 else
     [[ $quiet = 'false' ]] && printf "${reset}A Nano node version earlier than v18 has been detected.\n"
 fi
