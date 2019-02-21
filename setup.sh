@@ -14,14 +14,17 @@ reset=`tput sgr0`
 quiet='false'
 displaySeed='false'
 fastSync='false'
+importSeed=''
+printImportInstructions='false';
 domain=''
 email=''
 tag=''
-while getopts 'sqfd:e:t:' flag; do
+while getopts 'sqfd:e:t:i:' flag; do
   case "${flag}" in
     s) displaySeed='true' ;;
     d) domain="${OPTARG}" ;;
     e) email="${OPTARG}" ;;
+    i) importSeed="${OPTARG}" ;;
     q) quiet='true' ;;
     f) fastSync='true' ;;
     t) tag="${OPTARG}" ;;
@@ -188,19 +191,53 @@ fi
 # WALLET SETUP
 existedWallet="$(${nodeExec} --wallet_list | grep 'Wallet ID' | awk '{ print $NF}')"
 
-if [[ ! $existedWallet ]]; then
-    [[ $quiet = 'false' ]] && printf "=> ${yellow}No wallet found. Generating a new one... ${reset}"
+if [[ $importSeed ]]; then
 
-    walletId=$(${nodeExec} --wallet_create | tr -d '\r')
-    address="$(${nodeExec} --account_create --wallet=$walletId | awk '{ print $NF}')"
-    
-    [[ $quiet = 'false' ]] && printf "${green}done.${reset}\n\n"
+    if [[ ${#importSeed} = 64 ]]; then
+
+        [[ $quiet = 'false' ]] && printf "${yellow}Import seed enabled. Importing wallet... ${reset}"
+
+        if [[ ! $existedWallet ]]; then
+            walletId=$(${nodeExec} --wallet_create | tr -d '\r')
+        else
+            walletId=$(echo $existedWallet | tr -d '\r')
+        fi
+
+        docker exec -it nano-node /usr/bin/rai_node --wallet_change_seed --wallet=$walletId --key=$importSeed
+        address=$(${nodeExec} --wallet_list | grep 'xrb_' | awk '{ print $NF}' | tr -d '\r')
+
+        [[ $quiet = 'false' ]] && printf "${green}done.${reset}\n"
+
+    else 
+
+        [[ $quiet = 'false' ]] && printf "${yellow}Import seed enabled. However, no wallet seed was passed or it was invalid. Installer will create a temporary wallet and guide you how to manually import your seed... ${reset}"
+
+        walletId=$(${nodeExec} --wallet_create | tr -d '\r')
+        address=$(${nodeExec} --account_create --wallet=$walletId | awk '{ print $NF}')
+
+        printImportInstructions='true';
+
+        [[ $quiet = 'false' ]] && printf "${green}done.${reset}\n"
+
+    fi
+
 else
-    [[ $quiet = 'false' ]] && echo "=> ${yellow}Existing wallet found.${reset}"
-    [[ $quiet = 'false' ]] && echo ''
 
-    address="$(${nodeExec} --wallet_list | grep 'xrb_' | awk '{ print $NF}' | tr -d '\r')"
-    walletId=$(echo $existedWallet | tr -d '\r')
+    if [[ ! $existedWallet ]]; then
+        [[ $quiet = 'false' ]] && printf "=> ${yellow}No wallet found. Generating a new one... ${reset}"
+
+        walletId=$(${nodeExec} --wallet_create | tr -d '\r')
+        address=$(${nodeExec} --account_create --wallet=$walletId | awk '{ print $NF}')
+        
+        [[ $quiet = 'false' ]] && printf "${green}done.${reset}\n\n"
+    else
+        [[ $quiet = 'false' ]] && echo "=> ${yellow}Existing wallet found.${reset}"
+        [[ $quiet = 'false' ]] && echo ''
+
+        address=$(${nodeExec} --wallet_list | grep 'xrb_' | awk '{ print $NF}' | tr -d '\r')
+        walletId=$(echo $existedWallet | tr -d '\r')
+    fi
+
 fi
 
 if [[ $quiet = 'false' && $displaySeed = 'true' ]]; then
@@ -266,5 +303,15 @@ if [[ $quiet = 'false' ]]; then
     echo "${yellow} You can further configure and personalize your monitor by editing the config file located in ${green}nano-node-monitor/config.php${yellow}.${reset}"
 
     echo ""
+
+    if [[ $printImportInstructions = 'true' ]]; then
+        echo "${yellow} ------------------------------------------------------------------------------------------------------------------------------------------------------------ ${reset}"
+        echo "${yellow} In order to import your existing wallet seed use the following command (takes a while):${reset}"
+        echo "${yellow} ------------------------------------------------------------------------------------------------------------------------------------------------------------ ${reset}"
+        echo "${reset}${bold} ${nodeExec} --wallet_change_seed --wallet=${green}$walletId${reset} --key=${green}<YOUR_SEED> ${reset}"
+        echo "${yellow} ------------------------------------------------------------------------------------------------------------------------------------------------------------ ${reset}"
+        echo "${yellow} Afterwards, you will have to update your monitor with the correct NANO address (\$nanoNodeAccount) by editing the config file located in ${green}nano-node-monitor/config.php${yellow}.${reset}"
+        echo ""
+    fi
 
 fi
