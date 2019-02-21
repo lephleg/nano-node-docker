@@ -95,7 +95,7 @@ if [ -d "./nano-node" ]; then
     # check if mounted directory follows the new /root structure
     if [ ! -d "./nano-node/RaiBlocks" ]; then
         if [ ! -d "./nano-node/Nano" ]; then
-            [[ $quiet = 'false' ]] && printf "${reset}'./nano-node/RaiBlocks' directory doesn't exist. Migrating files... "
+            [[ $quiet = 'false' ]] && printf "${reset}Unsupported directory structure detected. Migrating files... "
             mkdir ./nano-node/RaiBlocks
             # move everything into subdirectory and suppress the error about itself
             mv ./nano-node/* ./nano-node/RaiBlocks/ &> /dev/null
