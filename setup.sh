@@ -94,11 +94,12 @@ fi
 if [ -d "./nano-node" ]; then
     # check if mounted directory follows the new /root structure
     if [ ! -d "./nano-node/RaiBlocks" ]; then
-        [[ $quiet = 'false' ]] && printf "${yellow}'./nano-node/RaiBlocks' directory doesn't exist. Migrating files... "
+        [[ $quiet = 'false' ]] && printf "${reset}'./nano-node/RaiBlocks' directory doesn't exist. Migrating files... "
         mkdir ./nano-node/RaiBlocks
         # move everything into subdirectory and suppress the error about itself
         mv ./nano-node/* ./nano-node/RaiBlocks/ &> /dev/null
-        [[ $quiet = 'false' ]] && printf "${green}done.\n"
+        [[ $quiet = 'false' ]] && printf "${green}done.\n${reset}"
+        [[ $quiet = 'false' ]] && echo ""
     fi
 fi
 
