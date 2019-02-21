@@ -74,16 +74,17 @@ fi
 [[ $quiet = 'false' ]] && echo "=> ${yellow}Checking initial status...${reset}"
 [[ $quiet = 'false' ]] && echo ""
 
-# check if node mounted directory exists
 if [ -d "./nano-beta-node" ]; then
     # check if mounted directory follows the new /root structure
-    if [ ! -d "./nano-node/RaiBlocksBeta" ]; then
-        [[ $quiet = 'false' ]] && printf "${reset}'./nano-beta-node/RaiBlocksBeta' directory doesn't exist. Migrating files... "
-        mkdir ./nano-beta-node/RaiBlocksBeta
-        # move everything into subdirectory and suppress the error about itself
-        mv ./nano-beta-node/* ./nano-beta-node/RaiBlocksBeta/ &> /dev/null
-        [[ $quiet = 'false' ]] && printf "${green}done.\n${reset}"
-        [[ $quiet = 'false' ]] && echo ""
+    if [ ! -d "./nano-beta-node/RaiBlocksBeta" ]; then
+        if [ ! -d "./nano-beta-node/NanoBeta" ]; then
+            [[ $quiet = 'false' ]] && printf "${reset}Unsupported directory structure detected. Migrating files... "
+            mkdir ./nano-beta-node/RaiBlocksBeta
+            # move everything into subdirectory and suppress the error about itself
+            mv ./nano-beta-node/* ./nano-beta-node/RaiBlocksBeta/ &> /dev/null
+            [[ $quiet = 'false' ]] && printf "${green}done.\n${reset}"
+            [[ $quiet = 'false' ]] && echo ""
+        fi
     fi
 fi
 
@@ -151,14 +152,10 @@ done
 nodeExec="docker exec -it nano-beta-node /usr/bin/rai_node"
 eval "$nodeExec --version" &> /dev/null
 
-# if rai_node doesn't exist, version is v18+
+# if rai_node doesn't exist, use nano_node
 if [ $? -ne 0 ]; then
-    [[ $quiet = 'false' ]] && printf "${reset}Nano v18.0 or newer detected.\n"
     nodeExec="docker exec -it nano-beta-node /usr/bin/nano_node"
-else
-    [[ $quiet = 'false' ]] && printf "${reset}A Nano node version earlier than v18 has been detected.\n"
 fi
-[[ $quiet = 'false' ]] && echo ''
 
 # SET BASH ALIASES FOR NODE CLI
 if [ -f ~/.bash_aliases ]; then
