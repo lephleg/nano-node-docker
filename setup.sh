@@ -3,6 +3,9 @@
 # VERSION
 version='v4.0'
 
+# FAST-SYNC DOWNLOAD LINK
+ledgerDownloadLink='https://mynano.ninja/api/ledger/download'
+
 # OUTPUT VARS
 red=`tput setaf 1`
 green=`tput setaf 2`
@@ -69,7 +72,7 @@ if [[ $fastSync = 'true' ]]; then
 
     if [[ $quiet = 'false' ]]; then
         printf "=> ${yellow}Downloading latest ledger files for fast-syncing...${reset}\n"
-        wget -O todaysledger.7z https://nanonode.ninja/api/ledger/download -q --show-progress
+        wget -O todaysledger.7z ${ledgerDownloadLink} -q --show-progress
 
         printf "=> ${yellow}Unzipping and placing the files (takes a while)...${reset} "
         7z x todaysledger.7z  -o./nano-node/RaiBlocks -y &> /dev/null
@@ -78,7 +81,7 @@ if [[ $fastSync = 'true' ]]; then
         echo ""
 
     else
-        wget -O todaysledger.7z https://nanonode.ninja/api/ledger/download -q 
+        wget -O todaysledger.7z ${ledgerDownloadLink} -q
         docker-compose stop nano-node &> /dev/null
         7z x todaysledger.7z  -o./nano-node/RaiBlocks -y &> /dev/null
         rm todaysledger.7z
