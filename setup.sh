@@ -157,11 +157,11 @@ fi
 [[ $quiet = 'false' ]] && echo ""
 [[ $quiet = 'false' ]] && printf "=> ${yellow}Waiting for NANO node to fully initialize... "
 
-isRpcLive="$(curl -s -d '{"action": "version"}' [::1]:7076 | grep "rpc_version")"
+isRpcLive="$(curl -s -d '{"action": "version"}' http://localhost:7076 | grep "rpc_version")"
 while [ ! -n "$isRpcLive" ];
 do
     sleep 1s
-    isRpcLive="$(curl -s -d '{"action": "version"}' [::1]:7076 | grep "rpc_version")"
+    isRpcLive="$(curl -s -d '{"action": "version"}' http://localhost:7076 | grep "rpc_version")"
 done
 
 [[ $quiet = 'false' ]] && printf "${green}done.${reset}\n\n"
