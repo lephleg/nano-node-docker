@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # VERSION
-version='v4.0'
+version='v4.1'
 
 # FAST-SYNC DOWNLOAD LINK
 ledgerDownloadLink='https://mynano.ninja/api/ledger/download'
