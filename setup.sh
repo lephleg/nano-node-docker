@@ -157,13 +157,13 @@ fi
 
 # SET BASH ALIASES FOR NODE CLI
 if [ -f ~/.bash_aliases ]; then
-    alias=$(cat ~/.bash_aliases | grep 'nano');
+    alias=$(cat ~/.bash_aliases | grep 'rai');
     if [[ ! $alias ]]; then
-        echo "alias nano='${nodeExec}'" >> ~/.bash_aliases;
+        echo "alias rai='${nodeExec}'" >> ~/.bash_aliases;
         source ~/.bashrc;
     fi
 else
-    echo "alias nano='${nodeExec}'" >> ~/.bash_aliases;
+    echo "alias rai='${nodeExec}'" >> ~/.bash_aliases;
     source ~/.bashrc;
 fi
 
