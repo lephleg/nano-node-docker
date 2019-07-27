@@ -34,7 +34,7 @@ services:
     hostname: nano-node-watcher
     restart: unless-stopped
     volumes:
-      - ./nano-beta-node/log:/opt/nanoNodeLog
+      - ./nano-beta-node/NanoBeta/log:/opt/nanoNodeLog
       - /var/run/docker.sock:/var/run/docker.sock
       - ./nano-node-watchdog/log:/opt/nanoNodeWatchdog/log
 
