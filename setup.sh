@@ -167,13 +167,7 @@ done
 [[ $quiet = 'false' ]] && printf "${green}done.${reset}\n\n"
 
 # DETERMINE NODE VERSION
-nodeExec="docker exec -it nano-node /usr/bin/rai_node"
-eval "$nodeExec --version" &> /dev/null
-
-# if rai_node doesn't exist, use nano_node
-if [ $? -ne 0 ]; then
-    nodeExec="docker exec -it nano-node /usr/bin/nano_node"
-fi
+nodeExec="docker exec -it nano-node /usr/bin/nano_node"
 
 # SET BASH ALIASES FOR NODE CLI
 if [ -f ~/.bash_aliases ]; then
