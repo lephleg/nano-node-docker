@@ -16,7 +16,7 @@ from datetime import datetime
 node_ip = 'nano-node'  # node's local IP
 node_port = '7076'  # RPC port
 log_file = "/opt/nanoNodeWatchdog/log/watchdog.log"  # log file for this script
-node_log_dir = "/root/Nano/log"  # the log directory of the Nano node
+node_log_dir = "/opt/nanoNodeLog"  # the log directory of the Nano node
 # -----------------------------------------------------------------------
 
 # test whether RPC is responsive
