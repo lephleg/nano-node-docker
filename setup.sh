@@ -1,7 +1,10 @@
 #!/bin/bash
 
 # VERSION
-version='v4.0'
+version='v4.1'
+
+# FAST-SYNC DOWNLOAD LINK
+ledgerDownloadLink='https://mynano.ninja/api/ledger/download'
 
 # OUTPUT VARS
 red=`tput setaf 1`
@@ -69,7 +72,7 @@ if [[ $fastSync = 'true' ]]; then
 
     if [[ $quiet = 'false' ]]; then
         printf "=> ${yellow}Downloading latest ledger files for fast-syncing...${reset}\n"
-        wget -O todaysledger.7z https://nanonode.ninja/api/ledger/download -q --show-progress
+        wget -O todaysledger.7z ${ledgerDownloadLink} -q --show-progress
 
         printf "=> ${yellow}Unzipping and placing the files (takes a while)...${reset} "
         7z x todaysledger.7z  -o./nano-node/RaiBlocks -y &> /dev/null
@@ -78,7 +81,7 @@ if [[ $fastSync = 'true' ]]; then
         echo ""
 
     else
-        wget -O todaysledger.7z https://nanonode.ninja/api/ledger/download -q 
+        wget -O todaysledger.7z ${ledgerDownloadLink} -q
         docker-compose stop nano-node &> /dev/null
         7z x todaysledger.7z  -o./nano-node/RaiBlocks -y &> /dev/null
         rm todaysledger.7z
@@ -164,23 +167,17 @@ done
 [[ $quiet = 'false' ]] && printf "${green}done.${reset}\n\n"
 
 # DETERMINE NODE VERSION
-nodeExec="docker exec -it nano-node /usr/bin/rai_node"
-eval "$nodeExec --version" &> /dev/null
-
-# if rai_node doesn't exist, use nano_node
-if [ $? -ne 0 ]; then
-    nodeExec="docker exec -it nano-node /usr/bin/nano_node"
-fi
+nodeExec="docker exec -it nano-node /usr/bin/nano_node"
 
 # SET BASH ALIASES FOR NODE CLI
 if [ -f ~/.bash_aliases ]; then
-    alias=$(cat ~/.bash_aliases | grep 'nano');
+    alias=$(cat ~/.bash_aliases | grep 'nano-node');
     if [[ ! $alias ]]; then
-        echo "alias nano='${nodeExec}'" >> ~/.bash_aliases;
+        echo "alias nano-node='${nodeExec}'" >> ~/.bash_aliases;
         source ~/.bashrc;
     fi
 else
-    echo "alias nano='${nodeExec}'" >> ~/.bash_aliases;
+    echo "alias nano-node='${nodeExec}'" >> ~/.bash_aliases;
     source ~/.bashrc;
 fi
 
@@ -198,7 +195,7 @@ else
     [[ $quiet = 'false' ]] && echo "=> ${yellow}Existing wallet found.${reset}"
     [[ $quiet = 'false' ]] && echo ''
 
-    address="$(${nodeExec} --wallet_list | grep 'xrb_' | awk '{ print $NF}' | tr -d '\r')"
+    address="$(${nodeExec} --wallet_list | grep 'nano_' | awk '{ print $NF}' | tr -d '\r')"
     walletId=$(echo $existedWallet | tr -d '\r')
 fi
 

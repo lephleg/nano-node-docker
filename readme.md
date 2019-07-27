@@ -97,7 +97,7 @@ The following flags are available when running the stack installer:
     <tr>
         <td><b>-f</b></td>
         <td>-</td>
-        <td>Enables fast-syncing by fetching the latest ledger and placing it into <i>/root/Raiblocks/</i> inside <b>nano-node</b>
+        <td>Enables fast-syncing by fetching the latest ledger and placing it into <i>/root/Nano/</i> inside <b>nano-node</b>
             container.</td>
     </tr>
     <tr>
@@ -120,16 +120,16 @@ The following flags are available when running the stack installer:
 
 ### NANO Node CLI bash alias
 
-NANO node runs inside the nano-node container. In order to execute commands from its [Command Line Interface](https://github.com/nanocurrency/raiblocks/wiki/Command-line-interface) you'll have to enter the container or execute them by using the following Docker command:
+NANO node runs inside the nano-node container. In order to execute commands from its [Command Line Interface](https://docs.nano.org/commands/command-line-interface/) you'll have to enter the container or execute them by using the following Docker command:
 
 ```
-$ docker exec -it nano-node rai_node <command>
+$ docker exec -it nano-node nano_node <command>
 ```
 
 For convinience the following shorthand alias is set by the installer:
 
 ```
-$ rai <command>
+$ nano-node <command>
 ```
 
 Both of the above formats are interchangeable.
@@ -150,7 +150,7 @@ The email (-e) argument is optional and would used by Let's Encrypt to warn you 
 
 ### Install with fast-syncing
 
-NANO Node Docker stack can also bootstrap any newly created node (or an existing one) with the latest ledger files. This implies that you are willing to trust third-party sources for your node history. The latest ledger files are obtained from the NANO Node Ninja link [here](https://nanonode.ninja/api/ledger/download).
+NANO Node Docker stack can also bootstrap any newly created node (or an existing one) with the latest ledger files. This implies that you are willing to trust third-party sources for your node history. The latest ledger files are obtained from the My Nano Ninja link [here](https://mynano.ninja/api/ledger/download).
 
 Just add the `-f` flag to your installer command:
 
@@ -190,7 +190,7 @@ Please check the [wiki](https://github.com/lephleg/nano-node-docker/wiki)
 
 ## **Credits**
 
-* **[Nanocurrency](https://github.com/nanocurrency/raiblocks)**
+* **[Nanocurrency](https://github.com/nanocurrency/nano-node)**
 * **[NANO Node Monitor](https://github.com/NanoTools/nanoNodeMonitor)**
 * **[nanoNodeScripts](https://github.com/dbachm123/nanoNodeScripts)**
 * **[jwilder/nginx-proxy](https://github.com/jwilder/nginx-proxy)**
