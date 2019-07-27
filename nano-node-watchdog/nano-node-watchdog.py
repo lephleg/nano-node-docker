@@ -81,9 +81,8 @@ def nodeAlive(ip, port, latestNodeLog, logFile):
 def findLatestFileInDir(dir, logFile):
     log('Log directory: ' + dir, logFile);
     list_of_files = glob.glob(dir+'/*.log')
-    log('Log files found: ' + ' '.join(list_of_files), logFile);
     latest_file = max(list_of_files, key=os.path.getctime)
-    log('Latest logfile: ' + logFile, logFile);
+    log('Latest logfile: ' + logFile, latest_file);
     return latest_file
 
 # check whether node is alive and restart if it is not
