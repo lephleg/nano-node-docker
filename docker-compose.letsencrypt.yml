@@ -29,7 +29,7 @@ services:
 
   nano-node-watchdog:
     build: ./nano-node-watchdog/
-    image: nano-node-docker-stack/nano-node-watchdog
+    image: nano-node-docker/nano-node-watchdog
     container_name: nano-node-watchdog
     hostname: nano-node-watcher
     restart: unless-stopped
