@@ -181,7 +181,7 @@ else
     [[ $quiet = 'false' ]] && echo "=> ${yellow}Existing wallet found.${reset}"
     [[ $quiet = 'false' ]] && echo ''
 
-    address="$(${nodeExec} --wallet_list | grep 'xrb_' | awk '{ print $NF}' | tr -d '\r')"
+    address="$(${nodeExec} --wallet_list | grep 'nano_' | awk '{ print $NF}' | tr -d '\r')"
     walletId=$(echo $existedWallet | tr -d '\r')
 fi
 
