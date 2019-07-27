@@ -1,4 +1,4 @@
-# NANO Node Docker stack
+# NANO Node Docker
 
 <div align="center">
     <img src="nano-node-docker.png" alt="Logo" width='180px' height='auto'/>
@@ -178,9 +178,8 @@ $ sudo ./setup.sh -sfd mydomain.com -e myemail@example.com
 ```
 
 (_display seed, apply fast-sync and use Let's Encrypt with your email supplied_)
-
 <div align="center">
-    <img src="screenshot.png" alt="Screenshot" width='680px' height='auto'/>
+    <img src="screenshot.png" alt="Screenshot" width='1000px' height='auto'/>
 </div>
 
 ## Self-configurable Installation
