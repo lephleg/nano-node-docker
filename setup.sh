@@ -35,9 +35,9 @@ done
 echo $@ > settings
 
 # PRINT INSTALLER DETAILS
-[[ $quiet = 'false' ]] && echo "${green} ----------------------${reset}"
+[[ $quiet = 'false' ]] && echo "${green} -----------------------${reset}"
 [[ $quiet = 'false' ]] && echo "${green}${bold} NANO Node Docker ${version}${reset}"
-[[ $quiet = 'false' ]] && echo "${green} ----------------------${reset}"
+[[ $quiet = 'false' ]] && echo "${green} -----------------------${reset}"
 [[ $quiet = 'false' ]] && echo ""
 
 # VERIFY TOOLS INSTALLATIONS
@@ -200,7 +200,7 @@ else
 fi
 
 if [[ $quiet = 'false' && $displaySeed = 'true' ]]; then
-    seed=$(${nodeExec} --wallet_decrypt_unsafe --wallet=$walletId | grep 'Seed' | awk '{ print $NF}')
+    seed=$(${nodeExec} --wallet_decrypt_unsafe --wallet=$walletId | grep 'Seed' | awk '{ print $NF}' | tr -d '\r')
 fi
 
 # UPDATE MONITOR CONFIGS
@@ -243,14 +243,14 @@ sed -i -e 's/\r//g' ./nano-node-monitor/config.php
 [[ $quiet = 'false' ]] && printf "${green}done.${reset}\n\n"
 
 if [[ $quiet = 'false' ]]; then
-    echo "${yellow} |======================================================================================| ${reset}"
-    echo "${green} ${bold}|Congratulations! NANO Node Docker stack has been setup successfully!                  |${reset}"
-    echo "${yellow} |======================================================================================| ${reset}"
-    echo "${yellow} |Node account address: ${green}$address${yellow}|"
+    echo "${yellow} |=========================================================================================| ${reset}"
+    echo "${yellow} | ${green}${bold}Congratulations! NANO Node Docker has been setup successfully!                          ${yellow}| ${reset}"
+    echo "${yellow} |=========================================================================================| ${reset}"
+    echo "${yellow} | Node account address: ${green}$address${yellow} | ${reset}"
     if [[ $displaySeed = 'true' ]]; then
-        echo "${yellow} |Node wallet seed: ${red}${bold}$seed${reset}${yellow}    |"
+        echo "${yellow} | Node wallet seed: ${red}$seed${yellow}      | ${reset}"
     fi
-    echo "${yellow} |======================================================================================| ${reset}"
+    echo "${yellow} |=========================================================================================| ${reset}"
 
     echo ""
 
