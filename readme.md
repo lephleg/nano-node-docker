@@ -1,4 +1,4 @@
-# NANO Node Docker stack
+# NANO Node Docker
 
 <div align="center">
     <img src="nano-node-docker.png" alt="Logo" width='180px' height='auto'/>
@@ -151,7 +151,7 @@ Please check the [wiki](https://github.com/lephleg/nano-node-docker/wiki)
 
 ## **Credits**
 
-* **[Nanocurrency](https://github.com/nanocurrency/raiblocks)**
+* **[Nanocurrency](https://github.com/nanocurrency/nano-node)**
 * **[NANO Node Monitor](https://github.com/NanoTools/nanoNodeMonitor)**
 * **[nanoNodeScripts](https://github.com/dbachm123/nanoNodeScripts)**
 * **[jwilder/nginx-proxy](https://github.com/jwilder/nginx-proxy)**
