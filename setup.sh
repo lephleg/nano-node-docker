@@ -151,13 +151,13 @@ nodeExec="docker exec -it nano-beta-node /usr/bin/nano_node"
 
 # SET BASH ALIASES FOR NODE CLI
 if [ -f ~/.bash_aliases ]; then
-    alias=$(cat ~/.bash_aliases | grep 'rai');
+    alias=$(cat ~/.bash_aliases | grep 'nano-node');
     if [[ ! $alias ]]; then
-        echo "alias rai='${nodeExec}'" >> ~/.bash_aliases;
+        echo "alias nano-node='${nodeExec}'" >> ~/.bash_aliases;
         source ~/.bashrc;
     fi
 else
-    echo "alias rai='${nodeExec}'" >> ~/.bash_aliases;
+    echo "alias nano-node='${nodeExec}'" >> ~/.bash_aliases;
     source ~/.bashrc;
 fi
 
