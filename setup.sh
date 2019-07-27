@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # VERSION
-version='v4.0 - BETA Network'
+version='v4.1 - BETA Network'
 
 # OUTPUT VARS
 red=`tput setaf 1`
@@ -147,23 +147,17 @@ done
 [[ $quiet = 'false' ]] && printf "${green}done.${reset}\n\n"
 
 # DETERMINE NODE VERSION
-nodeExec="docker exec -it nano-beta-node /usr/bin/rai_node"
-eval "$nodeExec --version" &> /dev/null
-
-# if rai_node doesn't exist, use nano_node
-if [ $? -ne 0 ]; then
-    nodeExec="docker exec -it nano-beta-node /usr/bin/nano_node"
-fi
+nodeExec="docker exec -it nano-beta-node /usr/bin/nano_node"
 
 # SET BASH ALIASES FOR NODE CLI
 if [ -f ~/.bash_aliases ]; then
-    alias=$(cat ~/.bash_aliases | grep 'nano');
+    alias=$(cat ~/.bash_aliases | grep 'nano-node');
     if [[ ! $alias ]]; then
-        echo "alias nano='${nodeExec}'" >> ~/.bash_aliases;
+        echo "alias nano-node='${nodeExec}'" >> ~/.bash_aliases;
         source ~/.bashrc;
     fi
 else
-    echo "alias nano='${nodeExec}'" >> ~/.bash_aliases;
+    echo "alias nano-node='${nodeExec}'" >> ~/.bash_aliases;
     source ~/.bashrc;
 fi
 
@@ -181,7 +175,7 @@ else
     [[ $quiet = 'false' ]] && echo "=> ${yellow}Existing wallet found.${reset}"
     [[ $quiet = 'false' ]] && echo ''
 
-    address="$(${nodeExec} --wallet_list | grep 'xrb_' | awk '{ print $NF}' | tr -d '\r')"
+    address="$(${nodeExec} --wallet_list | grep 'nano_' | awk '{ print $NF}' | tr -d '\r')"
     walletId=$(echo $existedWallet | tr -d '\r')
 fi
 

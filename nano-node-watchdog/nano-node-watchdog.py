@@ -78,16 +78,19 @@ def nodeAlive(ip, port, latestNodeLog, logFile):
     return ret
 
 # find latest file in directory
-def findLatestFileInDir(dir):
+def findLatestFileInDir(dir, logFile):
+    log('Log directory: ' + dir, logFile);
     list_of_files = glob.glob(dir+'/*.log')
+    log('Log files found: ' + ' '.join(list_of_files), logFile);
     latest_file = max(list_of_files, key=os.path.getctime)
+    log('Latest logfile: ' + logFile, logFile);
     return latest_file
 
 # check whether node is alive and restart if it is not
 def checkOnNode():
 
     # find latest log file in the node's log dir
-    latest_node_log = findLatestFileInDir(node_log_dir)
+    latest_node_log = findLatestFileInDir(node_log_dir, log_file)
 
     if not nodeAlive(node_ip, node_port, latest_node_log, log_file):
         log("Node appears to be stuck!", log_file)
