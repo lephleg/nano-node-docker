@@ -27,17 +27,6 @@ services:
     volumes:
       - ./nano-node-monitor:/opt/nanoNodeMonitor
 
-  nano-node-watchdog:
-    build: ./nano-node-watchdog/
-    image: nano-node-docker/nano-node-watchdog
-    container_name: nano-node-watchdog
-    hostname: nano-node-watcher
-    restart: unless-stopped
-    volumes:
-      - ./nano-beta-node/NanoBeta/log:/opt/nanoNodeLog
-      - /var/run/docker.sock:/var/run/docker.sock
-      - ./nano-node-watchdog/log:/opt/nanoNodeWatchdog/log
-
   nginx-proxy:
     image: jwilder/nginx-proxy
     container_name: nginx-proxy
