@@ -6,7 +6,7 @@
 
 ## **Description**
 
-**Install a NANO node on your server with a vast variety of tools in a couple on minutes!** 💫
+**Install a NANO node on your server with a variety of tools in a couple on minutes!** 💫
 
 <table>
 	<tr>
@@ -33,10 +33,6 @@ This project will build and deploy the following containers on your Docker host:
 	<tr>
   		<td><b>nano-node-monitor</b></td>
    		<td>The popular NANO Node Monitor PHP application based on <a href="https://hub.docker.com/r/nanotools/nanonodemonitor/" target="_blank">NanoTools's Docker image</a>.</td>
- 	</tr>
-	<tr>
-  		<td><b>nano-node-watchdog</b></td>
-   		<td>A custom lightweight watcher container checking on node's health status every hour. Checking code adapted from <a href="https://github.com/dbachm123/nanoNodeScripts" target="_blank">dbachm123's nanoNodeScripts</a>.</td>
  	</tr>
 	<tr>
   		<td><b>watchtower</b></td>
@@ -153,7 +149,6 @@ Please check the [wiki](https://github.com/lephleg/nano-node-docker/wiki)
 
 * **[Nanocurrency](https://github.com/nanocurrency/nano-node)**
 * **[NANO Node Monitor](https://github.com/NanoTools/nanoNodeMonitor)**
-* **[nanoNodeScripts](https://github.com/dbachm123/nanoNodeScripts)**
 * **[jwilder/nginx-proxy](https://github.com/jwilder/nginx-proxy)**
 * **[JrCs/docker-letsencrypt-nginx-proxy-companion](https://github.com/JrCs/docker-letsencrypt-nginx-proxy-companion)**
 * **[v2tec/watchtower](https://github.com/v2tec/watchtower)**
