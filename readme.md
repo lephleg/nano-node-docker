@@ -193,4 +193,6 @@ Please check the [wiki](https://github.com/lephleg/nano-node-docker/wiki)
 
 ## **Support**
 
+[![Stargazers over time](https://starchart.cc/lephleg/nano-node-docker.svg)](https://starchart.cc/lephleg/nano-node-docker)
+
 If you really liked this tool, **just give this project a star** ⭐️ so more people get to know it. Cheers! :)
