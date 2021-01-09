@@ -146,7 +146,7 @@ The email (-e) argument is optional and would used by Let's Encrypt to warn you 
 
 ### Install with fast-syncing
 
-NANO Node Docker stack can also bootstrap any newly created node (or an existing one) with the latest ledger files. This implies that you are willing to trust third-party sources for your node history. The latest ledger files are obtained from the My Nano Ninja link [here](https://mynano.ninja/api/ledger/download).
+NANO Node Docker stack can also bootstrap any newly created node (or an existing one) with the latest ledger files. This implies that you are willing to trust third-party sources for your node history. The latest ledger files are obtained from the NANO Foundation's Yandex [disk](https://yadi.sk/d/fcZgyES73Jzj5T) while My Nano Ninja [API](https://mynano.ninja/api) handles the extraction and final redirect.
 
 Just add the `-f` flag to your installer command:
 
