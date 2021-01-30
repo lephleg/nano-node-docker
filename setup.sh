@@ -75,7 +75,7 @@ if [[ $fastSync = 'true' ]]; then
         wget -O todaysledger.7z ${ledgerDownloadLink} -q --show-progress
 
         printf "=> ${yellow}Unzipping and placing the files (takes a while)...${reset} "
-        7z x todaysledger.7z  -o./nano-node/RaiBlocks -y &> /dev/null
+        7z x todaysledger.7z  -o./nano-node/Nano -y &> /dev/null
         rm todaysledger.7z
         printf "${green}done.${reset}\n"
         echo ""
@@ -83,7 +83,7 @@ if [[ $fastSync = 'true' ]]; then
     else
         wget -O todaysledger.7z ${ledgerDownloadLink} -q
         docker-compose stop nano-node &> /dev/null
-        7z x todaysledger.7z  -o./nano-node/RaiBlocks -y &> /dev/null
+        7z x todaysledger.7z  -o./nano-node/Nano -y &> /dev/null
         rm todaysledger.7z
     fi
 
