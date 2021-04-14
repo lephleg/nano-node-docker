@@ -36,7 +36,7 @@ This project will build and deploy the following containers on your Docker host:
  	</tr>
 	<tr>
   		<td><b>watchtower</b></td>
-   		<td>A process watching all the other containers and automatically applying any updates to their base image. No need to manually upgrade your node anymore.</td>
+   		<td>A process watching all the other containers and automatically applying any updates to their base image.</td>
  	</tr>
 </table>
 
