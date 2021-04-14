@@ -83,7 +83,7 @@ The following flags are available when running the stack installer:
     <tr>
         <td><b>-t</b></td>
         <td>Docker image tag</td>
-        <td>Indicates the explicit tag for the [nanocurrency Docker image](https://hub.docker.com/r/nanocurrency/nano/tags). Required.</td>
+        <td>Indicates the explicit tag for the <a href="https://hub.docker.com/r/nanocurrency/nano/tags" target="_blank">nanocurrency Docker image</a>. Required.</td>
     </tr>
     <tr>
         <td><b>-d</b></td>
