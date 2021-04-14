@@ -10,11 +10,11 @@
 
 <table>
 	<tr>
-        <th>Note</th>
+        <th>Notice</th>
     </tr>
     	<tr>
         <td>
-        For hosting a NANO node in the <a href="https://beta.nano.org/" target="_blank">BETA network</a>, checkout the "<a href="https://github.com/lephleg/nano-node-docker/tree/beta"><b>beta</b></a>" branch.
+        Nano Node Docker is an automated installer mainly intented to be used for development purposes. Main network nodes with significant delegated amounts shall not be left unattended to upgrade automatically and require special monitoring and security measures.
         </td>
     </tr>
 </table>
@@ -65,7 +65,7 @@ Download or clone the latest release, open a bash terminal and fire up the insta
 
 ```
 $ cd ~ && git clone https://github.com/lephleg/nano-node-docker.git && cd ~/nano-node-docker
-$ sudo ./setup.sh -s
+$ sudo ./setup.sh -s -t v21.3
 ```
 
 **That's it!** You can now navigate to your host IP to check your Nano Node Monitor dashboard. **Do not forget to write down** your wallet seed as it appears in the output of the installer.
@@ -79,6 +79,11 @@ The following flags are available when running the stack installer:
         <th width="20px">Flag</th>
         <th width="180px">Argument</th>
         <th>Description</th>
+    </tr>
+    <tr>
+        <td><b>-t</b></td>
+        <td>Docker image tag</td>
+        <td>Indicates the explicit tag for the [nanocurrency Docker image](https://hub.docker.com/r/nanocurrency/nano/tags). Required.</td>
     </tr>
     <tr>
         <td><b>-d</b></td>
@@ -107,11 +112,6 @@ The following flags are available when running the stack installer:
         <td>Prints the unecrypted seed of the node wallet during the setup (<b>WARNING:</b> in most cases you may want to avoid this
             for security purposes).</td>
     </tr>
-    <tr>
-        <td><b>-t</b></td>
-        <td>Docker image tag</td>
-        <td>Indicates the preferred tag for the nanocurrency Docker image. Defaults to "latest". Optional.</td>
-    </tr>
 </table>
 
 ### NANO Node CLI bash alias
@@ -137,7 +137,7 @@ Both of the above formats are interchangeable.
 After your DNS records are setup, fire up the installation script with the domain (-d) argument:
 
 ```
-$ sudo ./setup.sh -d mydomain.com -e myemail@example.com
+$ sudo ./setup.sh -t v21.3 -d mydomain.com -e myemail@example.com
 ```
 
 The email (-e) argument is optional and would used by Let's Encrypt to warn you of impeding certificate expiration.
@@ -151,16 +151,16 @@ NANO Node Docker stack can also bootstrap any newly created node (or an existing
 Just add the `-f` flag to your installer command:
 
 ```
-$ sudo ./setup.sh -f
+$ sudo ./setup.sh -t v21.3 -f
 ```
 **WARNING: You are strongly adviced to BACKUP your wallet seed before trying to fast-sync an existing node.**
 
-### **Install with a different NANO node image**
+### **Install with a specific NANO node image**
 
-In some cases (like in the BETA network) you may want to use a different Docker image tag for your node, other than the default "latest":
+From v4.4 onwards, the Nano node image tag argument is required. Please avoid using the `:latest` tag as it is [decomissioned by the Nano Foundation](https://github.com/nanocurrency/nano-node/issues/3182) repositories and it won't be updated anymore.
 
 ```
-$ sudo ./setup.sh -t V16.0RC2
+$ sudo ./setup.sh -t v21.3
 ```
 
 **Note:** For the mainnet, you are **strongly advised** to stick with the "latest" image tag. Do otherwise, only if instructed by the NANO core team. 
@@ -170,7 +170,7 @@ $ sudo ./setup.sh -t V16.0RC2
 All the installer flags can be chained, so you can easily combine them like this:
 
 ```
-$ sudo ./setup.sh -sfd mydomain.com -e myemail@example.com
+$ sudo ./setup.sh -sft v21.3 -d mydomain.com -e myemail@example.com
 ```
 
 (_display seed, apply fast-sync and use Let's Encrypt with your email supplied_)

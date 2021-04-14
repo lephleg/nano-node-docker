@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # VERSION
-version='v4.3'
+version='v4.4'
 
 # FAST-SYNC DOWNLOAD LINK
 ledgerDownloadLink='https://mynano.ninja/api/ledger/download'
@@ -50,6 +50,11 @@ fi
 docker-compose --version &> /dev/null
 if [ $? -ne 0 ]; then
     echo "${red}Docker Compose is not installed. Please follow the install instructions for your system at https://docs.docker.com/compose/install/.${reset}"
+    exit 2
+fi
+
+if [[ $tag == '' ]]; then
+    echo "${yellow}Nano node image tag is now required. Please set the -t argument explicitly to the version you are willing to install (https://hub.docker.com/r/nanocurrency/nano/tags).${reset}"
     exit 2
 fi
 
