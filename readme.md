@@ -140,7 +140,7 @@ After your DNS records are setup, fire up the installation script with the domai
 $ sudo ./setup.sh -t v21.3 -d mydomain.com -e myemail@example.com
 ```
 
-The email (-e) argument is optional and would used by Let's Encrypt to warn you of impeding certificate expiration.
+The email (-e) argument is optional and would be used by Let's Encrypt to warn you of impeding certificate expiration.
 
 **Done!** Navigate to your domain name to check your Nano Node Monitor Dashboard over HTTPS!
 
@@ -157,13 +157,13 @@ $ sudo ./setup.sh -t v21.3 -f
 
 ### **Install with a specific NANO node image**
 
-From v4.4 onwards, the Nano node image tag argument is required. Please avoid using the `:latest` tag as it is [decomissioned by the Nano Foundation](https://github.com/nanocurrency/nano-node/issues/3182) repositories and it won't be updated anymore.
+From v4.4 onwards, the Nano node image tag argument is required. Please avoid using the `:latest` tag as it was [decomissioned by the Nano Foundation](https://github.com/nanocurrency/nano-node/issues/3182) repositories and it won't be updated anymore.
 
 ```
 $ sudo ./setup.sh -t v21.3
 ```
 
-**Note:** For the mainnet, you are **strongly advised** to stick with the "latest" image tag. Do otherwise, only if instructed by the NANO core team. 
+**Note:** For the main network, you are **strongly advised** to follow the instructions by the NANO core team about the most optimal image tag. 
 
 ### **Combining installer flags**
 
