@@ -14,7 +14,7 @@
     </tr>
     	<tr>
         <td>
-        Nano Node Docker is an automated installer mainly intented to be used for development purposes. Main network nodes with significant delegated amounts shall not be left unattended to upgrade automatically and require special monitoring and security measures.
+        Nano Node Docker is an automated installer mainly intended to be used for development purposes. Main network nodes with significant delegated amounts shall not be left unattended to upgrade automatically and require special monitoring and security measures.
         </td>
     </tr>
 </table>
