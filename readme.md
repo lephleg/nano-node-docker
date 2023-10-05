@@ -65,7 +65,7 @@ Download or clone the latest release, open a bash terminal and fire up the insta
 
 ```
 $ cd ~ && git clone https://github.com/lephleg/nano-node-docker.git && cd ~/nano-node-docker
-$ sudo ./setup.sh -s -t V23.1
+$ sudo ./setup.sh -s -t V24.0
 ```
 
 **That's it!** You can now navigate to your host IP to check your Nano Node Monitor dashboard. **Do not forget to write down** your wallet seed as it appears in the output of the installer.
@@ -137,7 +137,7 @@ Both of the above formats are interchangeable.
 After your DNS records are setup, fire up the installation script with the domain (-d) argument:
 
 ```
-$ sudo ./setup.sh -t V23.1 -d mydomain.com -e myemail@example.com
+$ sudo ./setup.sh -t V24.0 -d mydomain.com -e myemail@example.com
 ```
 
 The email (-e) argument is optional and would be used by Let's Encrypt to warn you of impeding certificate expiration.
@@ -151,7 +151,7 @@ NANO Node Docker stack can also bootstrap any newly created node (or an existing
 Just add the `-f` flag to your installer command:
 
 ```
-$ sudo ./setup.sh -t V23.1 -f
+$ sudo ./setup.sh -t V24.0 -f
 ```
 **WARNING: You are strongly adviced to BACKUP your wallet seed before trying to fast-sync an existing node.**
 
@@ -160,7 +160,7 @@ $ sudo ./setup.sh -t V23.1 -f
 From v4.4 onwards, the Nano node image tag argument is required. Please avoid using the `:latest` tag as it was [decomissioned by the Nano Foundation](https://github.com/nanocurrency/nano-node/issues/3182) repositories and it won't be updated anymore.
 
 ```
-$ sudo ./setup.sh -t V23.1
+$ sudo ./setup.sh -t V24.0
 ```
 
 **Note:** For the main network, you are **strongly advised** to follow the instructions by the NANO core team about the most optimal image tag. 
@@ -170,7 +170,7 @@ $ sudo ./setup.sh -t V23.1
 All the installer flags can be chained, so you can easily combine them like this:
 
 ```
-$ sudo ./setup.sh -sft V23.1 -d mydomain.com -e myemail@example.com
+$ sudo ./setup.sh -sft V24.0 -d mydomain.com -e myemail@example.com
 ```
 
 (_display seed, apply fast-sync and use Let's Encrypt with your email supplied_)
