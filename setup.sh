@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # VERSION
-version='v4.4'
+version='v4.5'
 
 # FAST-SYNC DOWNLOAD LINK
 ledgerDownloadLink='https://s3.us-east-2.amazonaws.com/repo.nano.org/snapshots/latest'
@@ -47,7 +47,7 @@ if [ $? -ne 0 ]; then
     exit 2
 fi
 
-docker-compose --version &> /dev/null
+docker compose version &> /dev/null
 if [ $? -ne 0 ]; then
     echo "${red}Docker Compose is not installed. Please follow the install instructions for your system at https://docs.docker.com/compose/install/.${reset}"
     exit 2
@@ -77,6 +77,7 @@ if [[ $fastSync = 'true' ]]; then
 
     if [[ $quiet = 'false' ]]; then
         printf "=> ${yellow}Downloading latest ledger files for fast-syncing...${reset}\n"
+
         wget -O todaysledger.7z -i ${ledgerDownloadLink} -q --show-progress
 
         printf "=> ${yellow}Unzipping and placing the files (takes a while)...${reset} "
@@ -122,33 +123,33 @@ docker network create nano-node-network &> /dev/null
 if [[ $domain ]]; then
 
     if [[ $tag ]]; then
-        sed -i -e "s/    image: nanocurrency\/nano:.*/    image: nanocurrency\/nano:$tag/g" docker-compose.letsencrypt.yml
+        sed -i -e "s/    image: nanocurrency\/nano:.*/    image: nanocurrency\/nano:$tag/g" compose.letsencrypt.yaml
     fi
 
-    sed -i -e "s/      - VIRTUAL_HOST=.*/      - VIRTUAL_HOST=$domain/g" docker-compose.letsencrypt.yml
-    sed -i -e "s/      - LETSENCRYPT_HOST=.*/      - LETSENCRYPT_HOST=$domain/g" docker-compose.letsencrypt.yml
-    sed -i -e "s/      - DEFAULT_HOST=.*/      - DEFAULT_HOST=$domain/g" docker-compose.letsencrypt.yml
+    sed -i -e "s/      - VIRTUAL_HOST=.*/      - VIRTUAL_HOST=$domain/g" compose.letsencrypt.yaml
+    sed -i -e "s/      - LETSENCRYPT_HOST=.*/      - LETSENCRYPT_HOST=$domain/g" compose.letsencrypt.yaml
+    sed -i -e "s/      - DEFAULT_HOST=.*/      - DEFAULT_HOST=$domain/g" compose.letsencrypt.yaml
 
     if [[ $email ]]; then
-        sed -i -e "s/      - LETSENCRYPT_EMAIL=.*/      - LETSENCRYPT_EMAIL=$email/g" docker-compose.letsencrypt.yml
+        sed -i -e "s/      - LETSENCRYPT_EMAIL=.*/      - LETSENCRYPT_EMAIL=$email/g" compose.letsencrypt.yaml
     fi
 
     if [[ $quiet = 'false' ]]; then
-        docker-compose -f docker-compose.letsencrypt.yml up -d
+        docker compose -f compose.letsencrypt.yaml up -d
     else
-        docker-compose -f docker-compose.letsencrypt.yml up -d &> /dev/null
+        docker compose -f compose.letsencrypt.yaml up -d &> /dev/null
     fi
 
 else
 
     if [[ $tag ]]; then
-        sed -i -e "s/    image: nanocurrency\/nano:.*/    image: nanocurrency\/nano:$tag/g" docker-compose.yml
+        sed -i -e "s/    image: nanocurrency\/nano:.*/    image: nanocurrency\/nano:$tag/g" compose.yaml
     fi
 
     if [[ $quiet = 'false' ]]; then
-        docker-compose up -d
+        docker compose up -d
     else
-        docker-compose up -d &> /dev/null
+        docker compose up -d &> /dev/null
     fi
 
 fi

@@ -6,3 +6,4 @@ nano-node-watchdog/*/*.log
 /nano-node-monitor/config.php-e
 /settings
 /nano-node/
+/.DS_Store
