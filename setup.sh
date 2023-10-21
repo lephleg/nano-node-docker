@@ -77,7 +77,6 @@ if [[ $fastSync = 'true' ]]; then
 
     if [[ $quiet = 'false' ]]; then
         printf "=> ${yellow}Downloading latest ledger files for fast-syncing...${reset}\n"
-
         wget -O todaysledger.7z -i ${ledgerDownloadLink} -q --show-progress
 
         printf "=> ${yellow}Unzipping and placing the files (takes a while)...${reset} "
