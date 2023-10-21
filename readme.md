@@ -146,7 +146,7 @@ The email (-e) argument is optional and would be used by Let's Encrypt to warn y
 
 ### Install with fast-syncing
 
-NANO Node Docker stack can also bootstrap any newly created node (or an existing one) with the latest ledger files. This implies that you are willing to trust third-party sources for your node history. The latest ledger files are obtained from the NANO Foundation. As of Oct 2023, the compressed size for download exceeds 45GB. More info can be found [here](https://docs.nano.org/running-a-node/ledger-management/#downloaded-ledger-files). 
+NANO Node Docker stack can also bootstrap any newly created node (or an existing one) with the latest ledger files. This implies that you are willing to trust third-party sources for your node history. The latest ledger files are obtained from the NANO Foundation's [Nano Snapshots Uploader](https://s3.us-east-2.amazonaws.com/repo.nano.org/snapshots/latest). As of Oct 2023, the compressed size for download exceeds 45GB. More info can be found [here](https://docs.nano.org/running-a-node/ledger-management/#downloaded-ledger-files). 
 
 Just add the `-f` flag to your installer command:
 

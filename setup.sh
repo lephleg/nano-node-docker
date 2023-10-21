@@ -77,7 +77,7 @@ if [[ $fastSync = 'true' ]]; then
 
     if [[ $quiet = 'false' ]]; then
         printf "=> ${yellow}Downloading latest ledger files for fast-syncing...${reset}\n"
-        wget -O todaysledger.7z $(curl -s ${ledgerDownloadLink}) -q --show-progress
+        wget -O todaysledger.7z -i ${ledgerDownloadLink} -q --show-progress
 
         printf "=> ${yellow}Unzipping and placing the files (takes a while)...${reset} "
         7z x todaysledger.7z  -o./nano-node/Nano -y &> /dev/null
@@ -86,7 +86,7 @@ if [[ $fastSync = 'true' ]]; then
         echo ""
 
     else
-        wget -O todaysledger.7z ${ledgerDownloadLink} -q
+        wget -O todaysledger.7z -i ${ledgerDownloadLink} -q
         docker-compose stop nano-node &> /dev/null
         7z x todaysledger.7z  -o./nano-node/Nano -y &> /dev/null
         rm todaysledger.7z
