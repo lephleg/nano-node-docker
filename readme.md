@@ -65,7 +65,7 @@ Download or clone the latest release, open a bash terminal and fire up the insta
 
 ```
 $ cd ~ && git clone https://github.com/lephleg/nano-node-docker.git && cd ~/nano-node-docker
-$ sudo ./setup.sh -s -t V24.0
+$ sudo ./setup.sh -s -t V25.1
 ```
 
 **That's it!** You can now navigate to your host IP to check your Nano Node Monitor dashboard. **Do not forget to write down** your wallet seed as it appears in the output of the installer.
@@ -137,7 +137,7 @@ Both of the above formats are interchangeable.
 After your DNS records are setup, fire up the installation script with the domain (-d) argument:
 
 ```
-$ sudo ./setup.sh -t V24.0 -d mydomain.com -e myemail@example.com
+$ sudo ./setup.sh -t V25.1 -d mydomain.com -e myemail@example.com
 ```
 
 The email (-e) argument is optional and would be used by Let's Encrypt to warn you of impeding certificate expiration.
@@ -146,12 +146,12 @@ The email (-e) argument is optional and would be used by Let's Encrypt to warn y
 
 ### Install with fast-syncing
 
-NANO Node Docker stack can also bootstrap any newly created node (or an existing one) with the latest ledger files. This implies that you are willing to trust third-party sources for your node history. The latest ledger files are obtained from the NANO Foundation's Yandex [disk](https://yadi.sk/d/fcZgyES73Jzj5T) while My Nano Ninja [API](https://mynano.ninja/api) handles the extraction and final redirect.
+NANO Node Docker stack can also bootstrap any newly created node (or an existing one) with the latest ledger files. This implies that you are willing to trust third-party sources for your node history. The latest ledger files are obtained from the NANO Foundation. As of Oct 2023, the compressed size for download exceeds 45GB. More info can be found [here](https://docs.nano.org/running-a-node/ledger-management/#downloaded-ledger-files). 
 
 Just add the `-f` flag to your installer command:
 
 ```
-$ sudo ./setup.sh -t V24.0 -f
+$ sudo ./setup.sh -t V25.1 -f
 ```
 **WARNING: You are strongly adviced to BACKUP your wallet seed before trying to fast-sync an existing node.**
 
@@ -160,7 +160,7 @@ $ sudo ./setup.sh -t V24.0 -f
 From v4.4 onwards, the Nano node image tag argument is required. Please avoid using the `:latest` tag as it was [decomissioned by the Nano Foundation](https://github.com/nanocurrency/nano-node/issues/3182) repositories and it won't be updated anymore.
 
 ```
-$ sudo ./setup.sh -t V24.0
+$ sudo ./setup.sh -t V25.1
 ```
 
 **Note:** For the main network, you are **strongly advised** to follow the instructions by the NANO core team about the most optimal image tag. 
@@ -170,7 +170,7 @@ $ sudo ./setup.sh -t V24.0
 All the installer flags can be chained, so you can easily combine them like this:
 
 ```
-$ sudo ./setup.sh -sft V24.0 -d mydomain.com -e myemail@example.com
+$ sudo ./setup.sh -sft V25.1 -d mydomain.com -e myemail@example.com
 ```
 
 (_display seed, apply fast-sync and use Let's Encrypt with your email supplied_)
