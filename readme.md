@@ -137,7 +137,7 @@ Both of the above formats are interchangeable.
 After your DNS records are setup, fire up the installation script with the domain (-d) argument:
 
 ```
-$ sudo ./setup.sh -t V25.1 -d mydomain.com -e myemail@example.com
+$ sudo ./setup.sh -t V26.1 -d mydomain.com -e myemail@example.com
 ```
 
 The email (-e) argument is optional and would be used by Let's Encrypt to warn you of impeding certificate expiration.
@@ -170,7 +170,7 @@ $ sudo ./setup.sh -t V25.1
 All the installer flags can be chained, so you can easily combine them like this:
 
 ```
-$ sudo ./setup.sh -sft V25.1 -d mydomain.com -e myemail@example.com
+$ sudo ./setup.sh -sft V26.1 -d mydomain.com -e myemail@example.com
 ```
 
 (_display seed, apply fast-sync and use Let's Encrypt with your email supplied_)
