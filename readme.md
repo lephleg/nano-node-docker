@@ -65,7 +65,7 @@ Download or clone the latest release, open a bash terminal and fire up the insta
 
 ```
 $ cd ~ && git clone https://github.com/lephleg/nano-node-docker.git && cd ~/nano-node-docker
-$ sudo ./setup.sh -s -t V25.1
+$ sudo ./setup.sh -s -t V26.1
 ```
 
 **That's it!** You can now navigate to your host IP to check your Nano Node Monitor dashboard. **Do not forget to write down** your wallet seed as it appears in the output of the installer.
